@@ -1,0 +1,9 @@
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\bin\Debug\Nimbus_01P.exe.config
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\bin\Debug\Nimbus_01P.exe
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\bin\Debug\Nimbus_01P.pdb
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\obj\Debug\Nimbus_01P.csprojResolveAssemblyReference.cache
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\obj\Debug\Nimbus_01P.Form1.resources
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\obj\Debug\Nimbus_01P.Properties.Resources.resources
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\obj\Debug\Nimbus_01P.csproj.GenerateResource.Cache
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\obj\Debug\Nimbus_01P.exe
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\obj\Debug\Nimbus_01P.pdb
