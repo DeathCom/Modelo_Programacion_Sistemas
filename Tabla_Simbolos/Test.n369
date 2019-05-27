@@ -1,1 +1,3 @@
-<!_Nimbus_369_Code_!> { # Nimbus_Main#() [] }
+<!_Nimbus_369_Code_!>
+Nimbus_Main()
+[ cc abx > 23 res 15 ]

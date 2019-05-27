@@ -93,6 +93,7 @@ namespace Nimbus_02L
         {
             objTmp = objInitial;
             Nimbus_DAL dTemp = new Nimbus_DAL();
+            Nimbus_BLL dTempBll = new Nimbus_BLL();
             do
             {
                 if (objTmp.SIMBOLO.Equals(TOKEN.SIMBOLO))
@@ -101,9 +102,8 @@ namespace Nimbus_02L
                 }
                 else
                 {
-                    dTemp.CODIGO = "0";
-                    dTemp.SIMBOLO = TOKEN.SIMBOLO;
-                    dTemp.TIPO_TOKEN = "No definido";
+                    dTempBll.SAVE(TOKEN.CODIGO, TOKEN.SIMBOLO, TOKEN.TIPO_TOKEN);
+                    //SEARCH_TOKEN(TOKEN);
                 }
                 objTmp = objTmp.SIGUIENTE;
             } while (objTmp != objInitial);

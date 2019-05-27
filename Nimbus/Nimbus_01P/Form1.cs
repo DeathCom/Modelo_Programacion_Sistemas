@@ -16,8 +16,8 @@ namespace Nimbus_01P
 {
     public partial class Form1 : Form
     {
-        int cantLineas = 0;
-        string Nombre_Archivo, direccion, Simbolo;
+        int cantLineas = 0, contador = 0;
+        string Nombre_Archivo, direccion;
         Nimbus_BLL obj_Bll = new Nimbus_BLL();
 
 
@@ -27,17 +27,38 @@ namespace Nimbus_01P
 
             //Codigo Agregado
             Mensaje_carga_data();
-            tabControl1.Visible = false;
-            
+            Desactivar();
         }
+
+        #region Metodos_activar_Desactivar
+        public void Desactivar()
+        {
+            tabControl1.Visible = false;
+            dataGridView1.Visible = false;
+            dataGridView2.Visible = false;
+            Button_Guardar.Enabled = false;
+            guardarToolStripMenuItem.Enabled = false;
+            guardarComoToolStripMenuItem.Enabled = false;
+        }
+
+        public void Activar()
+        {
+            tabControl1.Visible = true;
+            dataGridView1.Visible = true;
+            dataGridView2.Visible = true;
+            Button_Guardar.Enabled = true;
+            guardarToolStripMenuItem.Enabled = true;
+            guardarComoToolStripMenuItem.Enabled = true;
+        }
+        #endregion
 
         #region Cargar_Tabla_Simbolos
         public void Mensaje_carga_data()
         {
-            MessageBox.Show("Cargue la tabla de Simbolos", "Nimbus 369", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //MessageBox.Show("Cargue la tabla de Simbolos", "Nimbus 369", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             LoadData();
         }
-        
+
         public void LoadData()
         {
             Nimbus_DAL objTmp = new Nimbus_DAL();
@@ -56,9 +77,10 @@ namespace Nimbus_01P
                         objTmp.SIMBOLO = values[1];
                         objTmp.TIPO_TOKEN = values[2];
                         obj_Bll.SAVE(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN);
+                        contador++;
                     }
                 }
-                MessageBox.Show("Lenguaje cargado.");
+                //MessageBox.Show("Lenguaje cargado.");
             }
             catch (Exception)
             {
@@ -91,6 +113,8 @@ namespace Nimbus_01P
         {
             try
             {
+                Activar();
+                dataGridView1.Rows.Clear();
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.Title = "Nimbus_369";
                 ofd.ShowDialog();
@@ -111,6 +135,22 @@ namespace Nimbus_01P
                 MessageBox.Show("El archivo no se abrio correctamente");
             }
 
+        }
+
+        public void Archivo_Nuevo()
+        {
+            try
+            {
+                //tabControl1.Visible = true;
+                Activar();
+                Panel_Codigo.Clear();
+                dataGridView1.Rows.Clear();
+                Panel_Codigo.Text = "<!_Nimbus_369_Code_!> Nimbus_Main() [ ]";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error al crear archivo");
+            }
         }
 
         public void Guardar_Archivo_Como()
@@ -149,20 +189,6 @@ namespace Nimbus_01P
             }
         }
 
-        public void Archivo_Nuevo()
-        {
-            try
-            {
-                tabControl1.Visible = true;
-                Panel_Codigo.Clear();
-                Panel_Codigo.Text = "< !_Nimbus_369_Code_!> \n { \n\t # Nimbus_Main#() \n\t [ \n\n\t ] \n }";
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error al crear archivo");
-            }
-        }
-
         public void Guardar_Archivo()
         {
             try
@@ -170,7 +196,6 @@ namespace Nimbus_01P
                 if (Nombre_Archivo == null)
                 {
                     Guardar_Archivo_Como();
-
                 }
                 else
                 {
@@ -238,58 +263,42 @@ namespace Nimbus_01P
         }
         #endregion
 
-        private void Button_Lexico_Click(object sender, EventArgs e)
-        {
-            Validar_Tokens();
-        }
-
+        #region Validar_Token_LLenar_Tabla_Token
         public void Validar_Tokens()
         {
             Nimbus_DAL obj_Dal = new Nimbus_DAL();
             string phrase = Panel_Codigo.Text;
-            MessageBox.Show(phrase);
-            string[] words = phrase.Split(' ');
+            //MessageBox.Show(phrase);
+            string[] words = phrase.Split(' ', '\n');
 
             foreach (var word in words)
             {
                 //System.Console.WriteLine($"<{word}>");
                 obj_Dal.SIMBOLO = word;
+                obj_Dal.CODIGO = Convert.ToString(contador + 1);
                 SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
             }
 
         }
-        
 
         public void SetInfo(Nimbus_DAL objTmp)
         {
             try
             {
-                ////txt_CustomerName.Text = objTmp.CODIGO;
-                //Simbolo = objTmp.SIMBOLO;
-                ////txt_Trio.Text = objTmp.TIPO_TOKEN;
-
-                DataTable dt = new DataTable();
-                dt.Columns.Add("CODIGO");
-                dt.Columns.Add("SIMBOLO");
-                dt.Columns.Add("TIPO_TOKEN");
-                DataRow row = dt.NewRow();
-
-                row["CODIGO"] = objTmp.CODIGO;
-                row["SIMBOLO"] = objTmp.SIMBOLO;
-                row["TIPO_TOKEN"] = objTmp.TIPO_TOKEN;
-                dt.Rows.Add(row);
-                    
-                dataGridView1.DataSource = dt;
-                dataGridView1.Update();
-
-
+                dataGridView1.Rows.Add(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN);
             }
             catch (Exception)
             {
                 MessageBox.Show("Error en Token");
             }
+        }
+        #endregion
 
+        private void Button_Lexico_Click(object sender, EventArgs e)
+        {
+            Validar_Tokens();
         }
 
+        
     }
 }

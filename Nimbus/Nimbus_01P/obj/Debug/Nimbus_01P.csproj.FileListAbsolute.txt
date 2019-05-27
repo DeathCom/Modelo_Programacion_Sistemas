@@ -20,3 +20,7 @@ C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_0
 C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\obj\Debug\Nimbus_01P.Form1.resources
 C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\obj\Debug\Nimbus_01P.Properties.Resources.resources
 C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\obj\Debug\Nimbus_01P.csproj.GenerateResource.Cache
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\bin\Debug\Nimbus_02L.dll
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\bin\Debug\Nimbus_03D.dll
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\bin\Debug\Nimbus_02L.pdb
+C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_01P\bin\Debug\Nimbus_03D.pdb
