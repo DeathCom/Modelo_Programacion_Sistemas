@@ -1,5 +1,4 @@
-Codigo,Simbolo,Tipo_Token
-1,<!_Nimbus_369_Code_!> ,Inicio_de_Programa
+1,<!_Nimbus_369_Code_!>,Inicio_de_Programa
 2,{,Signo_de_Puntuacion
 3,},Signo_de_Puntuacion
 4,#Nimbus_Main#(),Funcion_Principal

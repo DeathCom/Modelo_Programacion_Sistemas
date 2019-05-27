@@ -1,0 +1,5 @@
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_03D\bin\Debug\Nimbus_03D.dll
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_03D\bin\Debug\Nimbus_03D.pdb
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_03D\obj\Debug\Nimbus_03D.csprojResolveAssemblyReference.cache
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_03D\obj\Debug\Nimbus_03D.dll
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_03D\obj\Debug\Nimbus_03D.pdb

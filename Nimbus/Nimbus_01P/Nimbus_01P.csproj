@@ -79,6 +79,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nimbus_02L\Nimbus_02L.csproj">
+      <Project>{79fe81ec-bab7-49e9-ba3a-8e7e30cc2cef}</Project>
+      <Name>Nimbus_02L</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nimbus_03D\Nimbus_03D.csproj">
+      <Project>{0f4bd3b0-5c1b-497d-8f3d-05033ecc99c3}</Project>
+      <Name>Nimbus_03D</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -175,6 +175,7 @@
             this.Button_Lexico.Name = "Button_Lexico";
             this.Button_Lexico.Size = new System.Drawing.Size(23, 22);
             this.Button_Lexico.Text = "toolStripButton4";
+            this.Button_Lexico.Click += new System.EventHandler(this.Button_Lexico_Click);
             // 
             // Button_Sintactico
             // 

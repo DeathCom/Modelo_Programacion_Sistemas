@@ -8,21 +8,64 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Nimbus_02L;
+using Nimbus_03D;
+
 
 namespace Nimbus_01P
 {
     public partial class Form1 : Form
     {
         int cantLineas = 0;
-        string Nombre_Archivo, direccion;
+        string Nombre_Archivo, direccion, Simbolo;
+        Nimbus_BLL obj_Bll = new Nimbus_BLL();
+
 
         public Form1()
         {
             InitializeComponent();
 
             //Codigo Agregado
+            Mensaje_carga_data();
             tabControl1.Visible = false;
+            
         }
+
+        #region Cargar_Tabla_Simbolos
+        public void Mensaje_carga_data()
+        {
+            MessageBox.Show("Cargue la tabla de Simbolos", "Nimbus 369", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            LoadData();
+        }
+        
+        public void LoadData()
+        {
+            Nimbus_DAL objTmp = new Nimbus_DAL();
+            try
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Title = "csv";
+                ofd.ShowDialog();
+                if (File.Exists(ofd.FileName))
+                {
+                    string[] Lines = File.ReadAllLines(ofd.FileName);
+                    foreach (var line in Lines)
+                    {
+                        var values = line.Split(',');
+                        objTmp.CODIGO = values[0];
+                        objTmp.SIMBOLO = values[1];
+                        objTmp.TIPO_TOKEN = values[2];
+                        obj_Bll.SAVE(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN);
+                    }
+                }
+                MessageBox.Show("Lenguaje cargado.");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error en carga e Lenguaje");
+            }
+        }
+        #endregion
 
         #region Metodo_Leer_Archivo
         public void Leer_archivo(string NombreArchivo)
@@ -194,5 +237,59 @@ namespace Nimbus_01P
             System.Windows.Forms.Application.Exit();
         }
         #endregion
+
+        private void Button_Lexico_Click(object sender, EventArgs e)
+        {
+            Validar_Tokens();
+        }
+
+        public void Validar_Tokens()
+        {
+            Nimbus_DAL obj_Dal = new Nimbus_DAL();
+            string phrase = Panel_Codigo.Text;
+            MessageBox.Show(phrase);
+            string[] words = phrase.Split(' ');
+
+            foreach (var word in words)
+            {
+                //System.Console.WriteLine($"<{word}>");
+                obj_Dal.SIMBOLO = word;
+                SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+            }
+
+        }
+        
+
+        public void SetInfo(Nimbus_DAL objTmp)
+        {
+            try
+            {
+                ////txt_CustomerName.Text = objTmp.CODIGO;
+                //Simbolo = objTmp.SIMBOLO;
+                ////txt_Trio.Text = objTmp.TIPO_TOKEN;
+
+                DataTable dt = new DataTable();
+                dt.Columns.Add("CODIGO");
+                dt.Columns.Add("SIMBOLO");
+                dt.Columns.Add("TIPO_TOKEN");
+                DataRow row = dt.NewRow();
+
+                row["CODIGO"] = objTmp.CODIGO;
+                row["SIMBOLO"] = objTmp.SIMBOLO;
+                row["TIPO_TOKEN"] = objTmp.TIPO_TOKEN;
+                dt.Rows.Add(row);
+                    
+                dataGridView1.DataSource = dt;
+                dataGridView1.Update();
+
+
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error en Token");
+            }
+
+        }
+
     }
 }
