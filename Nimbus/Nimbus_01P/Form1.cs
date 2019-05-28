@@ -16,7 +16,7 @@ namespace Nimbus_01P
 {
     public partial class Form1 : Form
     {
-        int cantLineas = 0, contador = 0;
+        int contador = 1;
         string Nombre_Archivo, direccion;
         Nimbus_BLL obj_Bll = new Nimbus_BLL();
 
@@ -263,48 +263,36 @@ namespace Nimbus_01P
         }
         #endregion
 
-        #region Validar_Token_LLenar_Tabla_Token
-        public void Validar_Tokens()
+        #region Botones_desplazamiento y busqueda
+        private void Btn_Primero_Click(object sender, EventArgs e)
         {
-            Nimbus_DAL obj_Dal = new Nimbus_DAL();
-            Nimbus_DAL obj_temp = new Nimbus_DAL();
-            Nimbus_BLL dTempBll = new Nimbus_BLL();
-            string test = "hh", temp = "jj";
-
-            string phrase = Panel_Codigo.Text;
-            //MessageBox.Show(phrase);
-            string[] words = phrase.Split(' ', '\n');
-
-            foreach (var word in words)
-            {
-                //System.Console.WriteLine($"<{word}>");
-                obj_Dal.SIMBOLO = word;
-                temp = word;
-
-                obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
-                test = obj_temp.SIMBOLO;
-
-                if (test == string.Empty || test == null)
-                {
-                    obj_temp.CODIGO = Convert.ToString(contador);
-                    obj_temp.SIMBOLO = temp;
-                    obj_temp.TIPO_TOKEN = "Variable";
-                    dTempBll.SAVE(obj_temp.CODIGO, obj_temp.SIMBOLO, obj_temp.TIPO_TOKEN);
-                    obj_Dal = obj_temp;
-                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                }
-                else
-                {
-                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                }
-
-                //obj_Dal.CODIGO = Convert.ToString(contador + 1);
-                //SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                contador = contador+1;
-            }
-
+            SetInfo(obj_Bll.FIRST());
         }
 
+        private void Btn_Anterior_Click(object sender, EventArgs e)
+        {
+            SetInfo(obj_Bll.PREVIOUS());
+        }
+
+        private void Btn_Siguiente_Click(object sender, EventArgs e)
+        {
+            SetInfo(obj_Bll.FOLLOWING());
+        }
+
+        private void Btn_Ultimo_Click(object sender, EventArgs e)
+        {
+            SetInfo(obj_Bll.LAST());
+        }
+
+        private void Btn_Buscar_Click(object sender, EventArgs e)
+        {
+            Nimbus_DAL obj_Dal = new Nimbus_DAL();
+            obj_Dal.SIMBOLO = TextBox_Search.Text.Trim();
+            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+        }
+        #endregion
+
+        #region Colocar_Info_Tabla_Simbolos
         public void SetInfo(Nimbus_DAL objTmp)
         {
             try
@@ -316,13 +304,65 @@ namespace Nimbus_01P
                 MessageBox.Show("Error en Token");
             }
         }
+
+        
         #endregion
 
+        #region Validar_Token_LLenar_Tabla_Token
+        public void Validar_Tokens()
+        {
+            Nimbus_DAL obj_Dal = new Nimbus_DAL();
+            Nimbus_DAL obj_temp = new Nimbus_DAL();
+            string test = "hh", temp = "jj";
+
+            string Frase = Panel_Codigo.Text;
+            //MessageBox.Show(phrase);
+            string[] Palabras = Frase.Split(' ', '\n');
+
+            foreach (var palabra in Palabras)
+            {
+                //System.Console.WriteLine($"<{word}>");
+                obj_Dal.SIMBOLO = palabra;
+                temp = palabra;
+
+                obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
+                test = obj_temp.SIMBOLO;
+
+                if (test == string.Empty || test == null)
+                {
+                    obj_Dal.CODIGO = Convert.ToString(contador);
+                    obj_Dal.SIMBOLO = temp;
+                    obj_Dal.TIPO_TOKEN = "Variable";
+                    obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN);
+                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                    contador = contador + 1;
+                }
+                else
+                {
+                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                }
+            }
+        }
+
+
+        #endregion
+
+
+        #region Botones_Lexico_Sintactico_Semantico
         private void Button_Lexico_Click(object sender, EventArgs e)
         {
             Validar_Tokens();
         }
 
-        
+        private void Button_Sintactico_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Button_Semantico_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
     }
 }

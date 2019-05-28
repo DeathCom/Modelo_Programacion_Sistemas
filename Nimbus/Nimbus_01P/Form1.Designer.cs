@@ -46,6 +46,11 @@
             this.Button_Semantico = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.Button_Salir = new System.Windows.Forms.ToolStripButton();
+            this.Btn_Primero = new System.Windows.Forms.ToolStripButton();
+            this.Btn_Anterior = new System.Windows.Forms.ToolStripButton();
+            this.Btn_Buscar = new System.Windows.Forms.ToolStripButton();
+            this.Btn_Siguiente = new System.Windows.Forms.ToolStripButton();
+            this.Btn_Ultimo = new System.Windows.Forms.ToolStripButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Codigo = new System.Windows.Forms.TabPage();
             this.Panel_Codigo = new System.Windows.Forms.RichTextBox();
@@ -54,6 +59,7 @@
             this.Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tipo_Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.TextBox_Search = new System.Windows.Forms.ToolStripTextBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -130,7 +136,13 @@
             this.Button_Sintactico,
             this.Button_Semantico,
             this.toolStripSeparator2,
-            this.Button_Salir});
+            this.Button_Salir,
+            this.Btn_Primero,
+            this.Btn_Anterior,
+            this.Btn_Siguiente,
+            this.Btn_Ultimo,
+            this.Btn_Buscar,
+            this.TextBox_Search});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1111, 25);
@@ -190,6 +202,7 @@
             this.Button_Sintactico.Name = "Button_Sintactico";
             this.Button_Sintactico.Size = new System.Drawing.Size(23, 22);
             this.Button_Sintactico.Text = "toolStripButton5";
+            this.Button_Sintactico.Click += new System.EventHandler(this.Button_Sintactico_Click);
             // 
             // Button_Semantico
             // 
@@ -199,6 +212,7 @@
             this.Button_Semantico.Name = "Button_Semantico";
             this.Button_Semantico.Size = new System.Drawing.Size(23, 22);
             this.Button_Semantico.Text = "toolStripButton6";
+            this.Button_Semantico.Click += new System.EventHandler(this.Button_Semantico_Click);
             // 
             // toolStripSeparator2
             // 
@@ -215,6 +229,56 @@
             this.Button_Salir.Size = new System.Drawing.Size(23, 22);
             this.Button_Salir.Text = "toolStripButton7";
             this.Button_Salir.Click += new System.EventHandler(this.Button_Salir_Click);
+            // 
+            // Btn_Primero
+            // 
+            this.Btn_Primero.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Btn_Primero.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Primero.Image")));
+            this.Btn_Primero.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Btn_Primero.Name = "Btn_Primero";
+            this.Btn_Primero.Size = new System.Drawing.Size(23, 22);
+            this.Btn_Primero.Text = "toolStripButton1";
+            this.Btn_Primero.Click += new System.EventHandler(this.Btn_Primero_Click);
+            // 
+            // Btn_Anterior
+            // 
+            this.Btn_Anterior.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Btn_Anterior.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Anterior.Image")));
+            this.Btn_Anterior.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Btn_Anterior.Name = "Btn_Anterior";
+            this.Btn_Anterior.Size = new System.Drawing.Size(23, 22);
+            this.Btn_Anterior.Text = "toolStripButton2";
+            this.Btn_Anterior.Click += new System.EventHandler(this.Btn_Anterior_Click);
+            // 
+            // Btn_Buscar
+            // 
+            this.Btn_Buscar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Btn_Buscar.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Buscar.Image")));
+            this.Btn_Buscar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Btn_Buscar.Name = "Btn_Buscar";
+            this.Btn_Buscar.Size = new System.Drawing.Size(23, 22);
+            this.Btn_Buscar.Text = "toolStripButton3";
+            this.Btn_Buscar.Click += new System.EventHandler(this.Btn_Buscar_Click);
+            // 
+            // Btn_Siguiente
+            // 
+            this.Btn_Siguiente.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Btn_Siguiente.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Siguiente.Image")));
+            this.Btn_Siguiente.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Btn_Siguiente.Name = "Btn_Siguiente";
+            this.Btn_Siguiente.Size = new System.Drawing.Size(23, 22);
+            this.Btn_Siguiente.Text = "toolStripButton4";
+            this.Btn_Siguiente.Click += new System.EventHandler(this.Btn_Siguiente_Click);
+            // 
+            // Btn_Ultimo
+            // 
+            this.Btn_Ultimo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.Btn_Ultimo.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Ultimo.Image")));
+            this.Btn_Ultimo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Btn_Ultimo.Name = "Btn_Ultimo";
+            this.Btn_Ultimo.Size = new System.Drawing.Size(23, 22);
+            this.Btn_Ultimo.Text = "toolStripButton5";
+            this.Btn_Ultimo.Click += new System.EventHandler(this.Btn_Ultimo_Click);
             // 
             // tabControl1
             // 
@@ -290,6 +354,11 @@
             this.dataGridView2.Size = new System.Drawing.Size(729, 166);
             this.dataGridView2.TabIndex = 4;
             // 
+            // TextBox_Search
+            // 
+            this.TextBox_Search.Name = "TextBox_Search";
+            this.TextBox_Search.Size = new System.Drawing.Size(100, 25);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -349,6 +418,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Token;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tipo_Token;
         private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.ToolStripButton Btn_Primero;
+        private System.Windows.Forms.ToolStripButton Btn_Anterior;
+        private System.Windows.Forms.ToolStripButton Btn_Buscar;
+        private System.Windows.Forms.ToolStripButton Btn_Siguiente;
+        private System.Windows.Forms.ToolStripButton Btn_Ultimo;
+        private System.Windows.Forms.ToolStripTextBox TextBox_Search;
     }
 }
 
