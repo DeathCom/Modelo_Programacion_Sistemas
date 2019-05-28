@@ -267,6 +267,10 @@ namespace Nimbus_01P
         public void Validar_Tokens()
         {
             Nimbus_DAL obj_Dal = new Nimbus_DAL();
+            Nimbus_DAL obj_temp = new Nimbus_DAL();
+            Nimbus_BLL dTempBll = new Nimbus_BLL();
+            string test = "hh", temp = "jj";
+
             string phrase = Panel_Codigo.Text;
             //MessageBox.Show(phrase);
             string[] words = phrase.Split(' ', '\n');
@@ -275,8 +279,28 @@ namespace Nimbus_01P
             {
                 //System.Console.WriteLine($"<{word}>");
                 obj_Dal.SIMBOLO = word;
-                obj_Dal.CODIGO = Convert.ToString(contador + 1);
-                SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                temp = word;
+
+                obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
+                test = obj_temp.SIMBOLO;
+
+                if (test == string.Empty || test == null)
+                {
+                    obj_temp.CODIGO = Convert.ToString(contador);
+                    obj_temp.SIMBOLO = temp;
+                    obj_temp.TIPO_TOKEN = "Variable";
+                    dTempBll.SAVE(obj_temp.CODIGO, obj_temp.SIMBOLO, obj_temp.TIPO_TOKEN);
+                    obj_Dal = obj_temp;
+                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                }
+                else
+                {
+                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                }
+
+                //obj_Dal.CODIGO = Convert.ToString(contador + 1);
+                //SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                contador = contador+1;
             }
 
         }

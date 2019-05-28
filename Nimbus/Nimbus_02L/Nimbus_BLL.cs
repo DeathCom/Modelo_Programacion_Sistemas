@@ -100,11 +100,11 @@ namespace Nimbus_02L
                 {
                     dTemp = objTmp;
                 }
-                else
-                {
-                    dTempBll.SAVE(TOKEN.CODIGO, TOKEN.SIMBOLO, TOKEN.TIPO_TOKEN);
-                    //SEARCH_TOKEN(TOKEN);
-                }
+                //else
+                //{
+                //    dTempBll.SAVE(TOKEN.CODIGO, TOKEN.SIMBOLO, TOKEN.TIPO_TOKEN);
+                //    //SEARCH_TOKEN(TOKEN);
+                //}
                 objTmp = objTmp.SIGUIENTE;
             } while (objTmp != objInitial);
             return dTemp;
