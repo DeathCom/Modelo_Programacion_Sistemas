@@ -36,9 +36,20 @@ namespace Nimbus_01P
             tabControl1.Visible = false;
             dataGridView1.Visible = false;
             dataGridView2.Visible = false;
+
             Button_Guardar.Enabled = false;
             guardarToolStripMenuItem.Enabled = false;
             guardarComoToolStripMenuItem.Enabled = false;
+
+            Button_Lexico.Visible = false;
+            Button_Sintactico.Visible = false;
+            Button_Semantico.Visible = false;
+
+            Btn_Primero.Visible = true;
+            Btn_Anterior.Visible = true;
+            Btn_Siguiente.Visible = true;
+            Btn_Ultimo.Visible = true;
+            Btn_Buscar.Visible = true;
         }
 
         public void Activar()
@@ -46,9 +57,14 @@ namespace Nimbus_01P
             tabControl1.Visible = true;
             dataGridView1.Visible = true;
             dataGridView2.Visible = true;
+
             Button_Guardar.Enabled = true;
             guardarToolStripMenuItem.Enabled = true;
             guardarComoToolStripMenuItem.Enabled = true;
+
+            Button_Lexico.Visible = true;
+            Button_Sintactico.Visible = false;
+            Button_Semantico.Visible = false;
         }
         #endregion
 
@@ -292,6 +308,15 @@ namespace Nimbus_01P
         }
         #endregion
 
+        #region Boton_Limpiar
+        private void Btn_Limpiar_Click(object sender, EventArgs e)
+        {
+            Panel_Codigo.Clear();
+            dataGridView1.Rows.Clear();
+            dataGridView2.Rows.Clear();
+        }
+        #endregion
+
         #region Colocar_Info_Tabla_Simbolos
         public void SetInfo(Nimbus_DAL objTmp)
         {
@@ -330,12 +355,15 @@ namespace Nimbus_01P
 
                 if (test == string.Empty || test == null)
                 {
-                    obj_Dal.CODIGO = Convert.ToString(contador);
-                    obj_Dal.SIMBOLO = temp;
-                    obj_Dal.TIPO_TOKEN = "Variable";
-                    obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN);
-                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                    contador = contador + 1;
+                    if(temp != string.Empty || temp == null)
+                    {
+                        obj_Dal.CODIGO = Convert.ToString(contador);
+                        obj_Dal.SIMBOLO = temp;
+                        obj_Dal.TIPO_TOKEN = "Variable";
+                        obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN);
+                        SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                        contador = contador + 1;
+                    }
                 }
                 else
                 {
@@ -364,5 +392,7 @@ namespace Nimbus_01P
 
         }
         #endregion
+
+
     }
 }
