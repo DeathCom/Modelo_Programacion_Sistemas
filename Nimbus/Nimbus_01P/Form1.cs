@@ -308,10 +308,56 @@ namespace Nimbus_01P
         }
         #endregion
 
+        #region Colocar_Numero_Linea
+        private void Panel_Codigo_VScroll(object sender, EventArgs e)
+        {
+            //move location of numberLabel for amount 
+            //of pixels caused by scrollbar
+            int d = Panel_Codigo.GetPositionFromCharIndex(0).Y %
+                                      (Panel_Codigo.Font.Height + 1);
+            label1.Location = new Point(0, d);
+
+            Lablel_ActualizarLinea();
+        }
+
+        private void Panel_Codigo_TextChanged(object sender, EventArgs e)
+        {
+            Lablel_ActualizarLinea();
+        }
+
+        private void Lablel_ActualizarLinea()
+        {
+            //Obtenemos índice del primer caracter visible y
+            //número de la primera línea visible
+            Point pos = new Point(0, 0);
+            int firstIndex = Panel_Codigo.GetCharIndexFromPosition(pos);
+            int firstLine = Panel_Codigo.GetLineFromCharIndex(firstIndex);
+
+            //Ahora obtenemos el índice del último carácter visible y 
+            //el número de la última línea visible.
+            pos.X = ClientRectangle.Width;
+            pos.Y = ClientRectangle.Height;
+            int lastIndex = Panel_Codigo.GetCharIndexFromPosition(pos);
+            int lastLine = Panel_Codigo.GetLineFromCharIndex(lastIndex);
+
+            //esta es la posición del punto del último carácter visible, 
+            //usaremos su valor Y para calcular el tamaño de la etiqueta
+            pos = Panel_Codigo.GetPositionFromCharIndex(lastIndex);
+
+            //finalmente, se renumera etiqueta
+            label1.Text = "";
+            for (int i = firstLine; i <= lastLine; i++)
+            {
+                label1.Text += i + 1 + "\n";
+            }
+
+        }
+        #endregion
+
         #region Boton_Limpiar
         private void Btn_Limpiar_Click(object sender, EventArgs e)
         {
-            Panel_Codigo.Clear();
+            //Panel_Codigo.Clear();
             dataGridView1.Rows.Clear();
             dataGridView2.Rows.Clear();
         }
@@ -329,8 +375,6 @@ namespace Nimbus_01P
                 MessageBox.Show("Error en Token");
             }
         }
-
-        
         #endregion
 
         #region Validar_Token_LLenar_Tabla_Token
@@ -387,7 +431,6 @@ namespace Nimbus_01P
 
         #endregion
 
-
         #region Botones_Lexico_Sintactico_Semantico
         private void Button_Lexico_Click(object sender, EventArgs e)
         {
@@ -404,6 +447,8 @@ namespace Nimbus_01P
 
         }
         #endregion
+
+        
 
 
     }

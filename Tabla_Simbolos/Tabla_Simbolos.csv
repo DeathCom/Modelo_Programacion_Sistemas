@@ -1,61 +1,63 @@
 1,<!_Nimbus_369_Code_!>,Inicio_de_Programa
-2,{,Signo_de_Puntuacion
-3,Nimbus_Main(),Funcion_Principal
+2,Nimbus_Main(){,Funcion_Principal
+3,},Signo_de_Puntuacion
 4,[,Signo_de_Puntuacion
 5,],Signo_de_Puntuacion
 6,(,Signo_de_Puntuacion
 7,),Signo_de_Puntuacion
-8,@,Encapsulamiento
-9,$,Encapsulamiento
-10,ca,Palabra_Reservada
-11,cc,Palabra_Reservada
-12,en,Palabra_Reservada
-13,la,Palabra_Reservada
-14,flo,Palabra_Reservada
-15,!!,Comentario
-16,_,Signo_de_Puntuacion
-17,=,Constante
-18,#=>(),Funcion_Imprimir
-19,#<=(),Funcion_Capturar
-20,%,Concatenacion
-21,<,Asignacion
-22,>,Asignacion_Inversa
-23,sum,Operador
-24,res,Operador
-25,mult,Operador
-26,div,Operador
-27,modd,Operador
-28,exp,Operador
-29,divTc,Operador
-30,<sum,Operador
-31,<res,Operador
-32,<mult,Operador
-33,<div,Operador
-34,<modd,Operador
-35,<exp,Operador
-36,<divTc,Operador
-37,eq,Operador
-38,dif,Operador
-39,maq,Operador
-40,meq,Operador
-41,maiq,Operador
-42,meiq,Operador
-43,+,Operador
-44,/,Operador
-45,-,Operador
-46,^,Secuencia_escape
-47,^\,Secuencia_escape
-48,^/,Secuencia_escape
-49,^',Secuencia_escape
-50,"^""",Secuencia_escape
-51,^r,Secuencia_escape
-52,^t,Secuencia_escape
-53,~/<>,Condicional
-54,~//,Condicional
-55,~/?<>,Condicional
-56,**<>[],Ciclo
-57,*{}!{}[],Ciclo
-58,cont,Palabra_Reservada
-59,rupt,Palabra_Reservada
-60,&,Retorno_Funcion
-61,inv,Palabra_Reservada
+8,"""",Signo_de_Puntuacion
+9,_,Signo_de_Puntuacion
+10,|,Signo_de_Puntuacion
+11,~,Constante
+12,!!,Comentario
+,%,Concatenacion
+,<,Asignacion
+13,@,Encapsulamiento
+14,$,Encapsulamiento
+15,ca,Palabra_Reservada
+16,cc,Palabra_Reservada
+17,en,Palabra_Reservada
+18,la,Palabra_Reservada
+19,flo,Palabra_Reservada
+20,cont,Palabra_Reservada
+21,rupt,Palabra_Reservada
+22,inv,Palabra_Reservada
+25,#=>(,Funcion_Imprimir
+26,#<=(,Funcion_Capturar
+27,sum,Operador Matematico
+28,res,Operador Matematico
+29,mult,Operador Matematico
+30,div,Operador Matematico
+31,modd,Operador Matematico
+32,exp,Operador Matematico
+33,divTc,Operador Matematico
+34,<sum,Operador Matematico
+35,<res,Operador Matematico
+36,<mult,Operador Matematico
+37,<div,Operador Matematico
+38,<modd,Operador Matematico
+39,<exp,Operador Matematico
+40,<divTc,Operador Matematico
+41,eq,Expresion Booleana
+42,dif,Expresion Booleana
+43,maq,Expresion Booleana
+44,meq,Expresion Booleana
+45,maiq,Expresion Booleana
+46,meiq,Expresion Booleana
+47,+,Operador Logico
+48,/,Operador Logico
+49,-,Operador Logico
+50,:,Secuencia_escape
+51,:\,Secuencia_escape
+52,:/,Secuencia_escape
+53,:',Secuencia_escape
+54,":""",Secuencia_escape
+55,:r,Secuencia_escape
+56,:t,Secuencia_escape
+57,x,Condicional
+58,x!,Condicional
+59,zc<>[,Ciclo
+60,zl(,Ciclo
+61,F_,Declarador de Funcion
+62,&,Retorno_Funcion
+63,P_,Declarador de Procedimiento

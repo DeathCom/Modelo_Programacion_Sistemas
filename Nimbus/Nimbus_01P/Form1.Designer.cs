@@ -62,6 +62,7 @@
             this.Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tipo_Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -328,6 +329,7 @@
             // 
             // Codigo
             // 
+            this.Codigo.Controls.Add(this.label1);
             this.Codigo.Controls.Add(this.Panel_Codigo);
             this.Codigo.Location = new System.Drawing.Point(4, 22);
             this.Codigo.Name = "Codigo";
@@ -340,11 +342,13 @@
             // Panel_Codigo
             // 
             this.Panel_Codigo.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Panel_Codigo.Location = new System.Drawing.Point(-4, 0);
+            this.Panel_Codigo.Location = new System.Drawing.Point(23, 0);
             this.Panel_Codigo.Name = "Panel_Codigo";
-            this.Panel_Codigo.Size = new System.Drawing.Size(729, 285);
+            this.Panel_Codigo.Size = new System.Drawing.Size(706, 285);
             this.Panel_Codigo.TabIndex = 0;
             this.Panel_Codigo.Text = "";
+            this.Panel_Codigo.VScroll += new System.EventHandler(this.Panel_Codigo_VScroll);
+            this.Panel_Codigo.TextChanged += new System.EventHandler(this.Panel_Codigo_TextChanged);
             // 
             // dataGridView1
             // 
@@ -391,6 +395,16 @@
             this.dataGridView2.Size = new System.Drawing.Size(729, 166);
             this.dataGridView2.TabIndex = 4;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(1, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(16, 20);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -416,6 +430,7 @@
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.Codigo.ResumeLayout(false);
+            this.Codigo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
@@ -458,6 +473,7 @@
         private System.Windows.Forms.ToolStripTextBox TextBox_Search;
         private System.Windows.Forms.ToolStripButton Btn_Limpiar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.Label label1;
     }
 }
 
