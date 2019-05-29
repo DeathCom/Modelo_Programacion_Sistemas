@@ -357,9 +357,21 @@ namespace Nimbus_01P
                 {
                     if(temp != string.Empty || temp == null)
                     {
+                        char[] letras = temp.ToCharArray();
+                        foreach(var letra in letras)
+                        {
+                            if (char.IsNumber(letra) == true)
+                            {
+                                obj_Dal.TIPO_TOKEN = "Digito";
+                            }
+                            else
+                            {
+                                obj_Dal.TIPO_TOKEN = "Variable";
+                            }
+                        }
+                        
                         obj_Dal.CODIGO = Convert.ToString(contador);
                         obj_Dal.SIMBOLO = temp;
-                        obj_Dal.TIPO_TOKEN = "Variable";
                         obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN);
                         SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
                         contador = contador + 1;

@@ -161,6 +161,7 @@
             this.Button_Abrir.Name = "Button_Abrir";
             this.Button_Abrir.Size = new System.Drawing.Size(23, 22);
             this.Button_Abrir.Text = "toolStripButton1";
+            this.Button_Abrir.ToolTipText = "Abrir";
             this.Button_Abrir.Click += new System.EventHandler(this.Button_Abrir_Click);
             // 
             // Button_Nuevo
@@ -171,6 +172,7 @@
             this.Button_Nuevo.Name = "Button_Nuevo";
             this.Button_Nuevo.Size = new System.Drawing.Size(23, 22);
             this.Button_Nuevo.Text = "toolStripButton2";
+            this.Button_Nuevo.ToolTipText = "Nuevo";
             this.Button_Nuevo.Click += new System.EventHandler(this.Button_Nuevo_Click);
             // 
             // Button_Guardar
@@ -181,6 +183,7 @@
             this.Button_Guardar.Name = "Button_Guardar";
             this.Button_Guardar.Size = new System.Drawing.Size(23, 22);
             this.Button_Guardar.Text = "toolStripButton3";
+            this.Button_Guardar.ToolTipText = "Guardar";
             this.Button_Guardar.Click += new System.EventHandler(this.Button_Guardar_Click);
             // 
             // toolStripSeparator1
@@ -196,6 +199,7 @@
             this.Button_Lexico.Name = "Button_Lexico";
             this.Button_Lexico.Size = new System.Drawing.Size(23, 22);
             this.Button_Lexico.Text = "toolStripButton4";
+            this.Button_Lexico.ToolTipText = "Analizador Lexico";
             this.Button_Lexico.Click += new System.EventHandler(this.Button_Lexico_Click);
             // 
             // Button_Sintactico
@@ -206,6 +210,7 @@
             this.Button_Sintactico.Name = "Button_Sintactico";
             this.Button_Sintactico.Size = new System.Drawing.Size(23, 22);
             this.Button_Sintactico.Text = "toolStripButton5";
+            this.Button_Sintactico.ToolTipText = "Analizador Sintactico";
             this.Button_Sintactico.Click += new System.EventHandler(this.Button_Sintactico_Click);
             // 
             // Button_Semantico
@@ -216,6 +221,7 @@
             this.Button_Semantico.Name = "Button_Semantico";
             this.Button_Semantico.Size = new System.Drawing.Size(23, 22);
             this.Button_Semantico.Text = "toolStripButton6";
+            this.Button_Semantico.ToolTipText = "Analizador Semantico";
             this.Button_Semantico.Click += new System.EventHandler(this.Button_Semantico_Click);
             // 
             // toolStripSeparator2
@@ -232,6 +238,7 @@
             this.Button_Salir.Name = "Button_Salir";
             this.Button_Salir.Size = new System.Drawing.Size(23, 22);
             this.Button_Salir.Text = "toolStripButton7";
+            this.Button_Salir.ToolTipText = "Salir";
             this.Button_Salir.Click += new System.EventHandler(this.Button_Salir_Click);
             // 
             // Btn_Limpiar
@@ -242,6 +249,7 @@
             this.Btn_Limpiar.Name = "Btn_Limpiar";
             this.Btn_Limpiar.Size = new System.Drawing.Size(23, 22);
             this.Btn_Limpiar.Text = "toolStripButton1";
+            this.Btn_Limpiar.ToolTipText = "Limpiar";
             this.Btn_Limpiar.Click += new System.EventHandler(this.Btn_Limpiar_Click);
             // 
             // toolStripSeparator3
@@ -257,6 +265,7 @@
             this.Btn_Primero.Name = "Btn_Primero";
             this.Btn_Primero.Size = new System.Drawing.Size(23, 22);
             this.Btn_Primero.Text = "toolStripButton1";
+            this.Btn_Primero.ToolTipText = "Primero";
             this.Btn_Primero.Click += new System.EventHandler(this.Btn_Primero_Click);
             // 
             // Btn_Anterior
@@ -267,6 +276,7 @@
             this.Btn_Anterior.Name = "Btn_Anterior";
             this.Btn_Anterior.Size = new System.Drawing.Size(23, 22);
             this.Btn_Anterior.Text = "toolStripButton2";
+            this.Btn_Anterior.ToolTipText = "Anterior";
             this.Btn_Anterior.Click += new System.EventHandler(this.Btn_Anterior_Click);
             // 
             // Btn_Siguiente
@@ -277,6 +287,7 @@
             this.Btn_Siguiente.Name = "Btn_Siguiente";
             this.Btn_Siguiente.Size = new System.Drawing.Size(23, 22);
             this.Btn_Siguiente.Text = "toolStripButton4";
+            this.Btn_Siguiente.ToolTipText = "Siguiente";
             this.Btn_Siguiente.Click += new System.EventHandler(this.Btn_Siguiente_Click);
             // 
             // Btn_Ultimo
@@ -287,6 +298,7 @@
             this.Btn_Ultimo.Name = "Btn_Ultimo";
             this.Btn_Ultimo.Size = new System.Drawing.Size(23, 22);
             this.Btn_Ultimo.Text = "toolStripButton5";
+            this.Btn_Ultimo.ToolTipText = "Ultimo";
             this.Btn_Ultimo.Click += new System.EventHandler(this.Btn_Ultimo_Click);
             // 
             // Btn_Buscar
@@ -297,6 +309,7 @@
             this.Btn_Buscar.Name = "Btn_Buscar";
             this.Btn_Buscar.Size = new System.Drawing.Size(23, 22);
             this.Btn_Buscar.Text = "toolStripButton3";
+            this.Btn_Buscar.ToolTipText = "Buscar";
             this.Btn_Buscar.Click += new System.EventHandler(this.Btn_Buscar_Click);
             // 
             // TextBox_Search
