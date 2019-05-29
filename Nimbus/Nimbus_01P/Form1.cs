@@ -19,7 +19,7 @@ namespace Nimbus_01P
         int contador = 1;
         string Nombre_Archivo, direccion;
         Nimbus_BLL obj_Bll = new Nimbus_BLL();
-
+        DateTime Hoy = DateTime.Now;
 
         public Form1()
         {
@@ -68,7 +68,7 @@ namespace Nimbus_01P
         }
         #endregion
 
-        #region Cargar_Tabla_Simbolos
+        #region Metodos_Cargar_Tabla_Simbolos
         public void Mensaje_carga_data()
         {
             //MessageBox.Show("Cargue la tabla de Simbolos", "Nimbus 369", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -100,7 +100,8 @@ namespace Nimbus_01P
             }
             catch (Exception)
             {
-                MessageBox.Show("Error en carga e Lenguaje");
+                MessageBox.Show("Error en carga el Lenguaje");
+                LoadData();
             }
         }
         #endregion
@@ -230,85 +231,7 @@ namespace Nimbus_01P
         }
         #endregion
 
-        #region ToolStrip_Menu_Principal
-        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Abrir_archivo();
-        }
-
-        private void nuevoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Archivo_Nuevo();
-        }
-
-        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Guardar_Archivo();
-        }
-
-        private void guardarComoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Guardar_Archivo_Como();
-        }
-
-        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Application.Exit();
-        }
-        #endregion
-
-        #region Botones_Abrir_Salir_Guardar_Nuevo
-        private void Button_Abrir_Click(object sender, EventArgs e)
-        {
-            Abrir_archivo();
-        }
-
-        private void Button_Nuevo_Click(object sender, EventArgs e)
-        {
-            Archivo_Nuevo();
-        }
-
-        private void Button_Guardar_Click(object sender, EventArgs e)
-        {
-            Guardar_Archivo();
-        }
-
-        private void Button_Salir_Click(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Application.Exit();
-        }
-        #endregion
-
-        #region Botones_desplazamiento y busqueda
-        private void Btn_Primero_Click(object sender, EventArgs e)
-        {
-            SetInfo(obj_Bll.FIRST());
-        }
-
-        private void Btn_Anterior_Click(object sender, EventArgs e)
-        {
-            SetInfo(obj_Bll.PREVIOUS());
-        }
-
-        private void Btn_Siguiente_Click(object sender, EventArgs e)
-        {
-            SetInfo(obj_Bll.FOLLOWING());
-        }
-
-        private void Btn_Ultimo_Click(object sender, EventArgs e)
-        {
-            SetInfo(obj_Bll.LAST());
-        }
-
-        private void Btn_Buscar_Click(object sender, EventArgs e)
-        {
-            Nimbus_DAL obj_Dal = new Nimbus_DAL();
-            obj_Dal.SIMBOLO = TextBox_Search.Text.Trim();
-            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-        }
-        #endregion
-
-        #region Colocar_Numero_Linea
+        #region Metodo_Colocar_Numero_Linea
         private void Panel_Codigo_VScroll(object sender, EventArgs e)
         {
             //move location of numberLabel for amount 
@@ -354,8 +277,8 @@ namespace Nimbus_01P
         }
         #endregion
 
-        #region Boton_Limpiar
-        private void Btn_Limpiar_Click(object sender, EventArgs e)
+        #region Metodo_limpiar
+        public void Limpiar()
         {
             //Panel_Codigo.Clear();
             dataGridView1.Rows.Clear();
@@ -363,7 +286,7 @@ namespace Nimbus_01P
         }
         #endregion
 
-        #region Colocar_Info_Tabla_Simbolos
+        #region Metodo_Colocar_Pintar_Tabla_Simbolos
         public void SetInfo(Nimbus_DAL objTmp)
         {
             try
@@ -377,7 +300,22 @@ namespace Nimbus_01P
         }
         #endregion
 
-        #region Validar_Token_LLenar_Tabla_Token
+        #region Metodo_validar_Numero
+        public bool ValidaEntero(String Variable)
+        {
+            try
+            {
+                Int32.Parse(Variable);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        #endregion
+
+        #region Metodo_Validar_Token_LLenar_Tabla_Token
         public void Validar_Tokens()
         {
             Nimbus_DAL obj_Dal = new Nimbus_DAL();
@@ -385,7 +323,7 @@ namespace Nimbus_01P
             string test = "hh", temp = "jj";
 
             string Frase = Panel_Codigo.Text;
-            //MessageBox.Show(phrase);
+            //MessageBox.Show(Frase);
             string[] Palabras = Frase.Split(' ', '\n');
 
             foreach (var palabra in Palabras)
@@ -406,7 +344,14 @@ namespace Nimbus_01P
                         {
                             if (char.IsNumber(letra) == true)
                             {
-                                obj_Dal.TIPO_TOKEN = "Digito";
+                                if (ValidaEntero(temp))
+                                {
+                                    obj_Dal.TIPO_TOKEN = "Digito Entero";
+                                }
+                                else
+                                {
+                                    obj_Dal.TIPO_TOKEN = "Digito Flotante";
+                                }
                             }
                             else
                             {
@@ -427,13 +372,164 @@ namespace Nimbus_01P
                 }
             }
         }
+        #endregion
+
+        #region Metodo_Guardar_tabla_Simbolos_Tabla_Errores
+        public void Salvar_tablas()
+        {
+            Guardar_tabla_Simbolos();
+            Guardar_tabla_Errores();
+            MessageBox.Show("Datos Exportados a C:\\Nimbus");
+        }
+        public void Guardar_tabla_Simbolos()
+        {
+            if (!Directory.Exists(@"C:\Nimbus\Tabla_Simbolos"))
+            {
+                Directory.CreateDirectory(@"C:\Nimbus\Tabla_Simbolos");
+            }
+
+            TextWriter TSimbolos = new StreamWriter(@"C:\Nimbus\Tabla_Simbolos\Tabla_Simbolos_"+ Hoy.Month + Hoy.Day + Hoy.Year +"_"+ Hoy.Hour + Hoy.Minute + Hoy.Second + ".txt");
+            int rowcount = dataGridView1.Rows.Count;
+            for (int i = 0; i < rowcount - 1; i++)
+            {
+                TSimbolos.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t"
+                                + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t"
+                                + dataGridView1.Rows[i].Cells[2].Value.ToString() + "\t");
+            }
+            TSimbolos.Close();
+            
+        }
+
+        public void Guardar_tabla_Errores()
+        {
+            if (!Directory.Exists(@"C:\Nimbus\Tabla_Errores"))
+            {
+                Directory.CreateDirectory(@"C:\Nimbus\Tabla_Errores");
+            }
+
+            TextWriter TErrores = new StreamWriter(@"C:\Nimbus\Tabla_Errores\Tabla_Errores_" + Hoy.Month + Hoy.Day + Hoy.Year + "_" + Hoy.Hour + Hoy.Minute + Hoy.Second + ".txt");
+            int rowcount = dataGridView2.Rows.Count;
+            for (int i = 0; i < rowcount - 1; i++)
+            {
+                TErrores.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t"
+                                + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t"
+                                + dataGridView1.Rows[i].Cells[2].Value.ToString() + "\t");
+            }
+            TErrores.Close();
+        }
+        #endregion
+
+        #region Metodo_salir
+        public void Salir()
+        {
+            if (MessageBox.Show("Desea Salir y Guardar las Tablas?", "Confirm User Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                int rowcount1 = dataGridView1.Rows.Count;
+                int rowcount2 = dataGridView1.Rows.Count;
+                if (dataGridView1.Visible || dataGridView2.Visible)
+                    if(rowcount1 > 0 || rowcount2 > 0)
+                {
+                    Salvar_tablas();
+                }
+                System.Windows.Forms.Application.Exit();
+            }
+            //else
+            //{
+            //    System.Windows.Forms.Application.Exit();
+            //}
+        }
+        #endregion
 
 
+        #region ToolStrip_Menu_Principal
+        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Abrir_archivo();
+        }
+
+        private void nuevoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Archivo_Nuevo();
+        }
+
+        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Guardar_Archivo();
+        }
+
+        private void guardarComoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Guardar_Archivo_Como();
+        }
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Salir();
+        }
+        #endregion
+
+        #region Botones_Abrir_Salir_Guardar_Nuevo
+        private void Button_Abrir_Click(object sender, EventArgs e)
+        {
+            Abrir_archivo();
+        }
+
+        private void Button_Nuevo_Click(object sender, EventArgs e)
+        {
+            Archivo_Nuevo();
+        }
+
+        private void Button_Guardar_Click(object sender, EventArgs e)
+        {
+            Guardar_Archivo();
+        }
+
+        private void Button_Salir_Click(object sender, EventArgs e)
+        {
+            Salir();
+        }
+        #endregion
+
+        #region Botones_desplazamiento y busqueda
+        private void Btn_Primero_Click(object sender, EventArgs e)
+        {
+            SetInfo(obj_Bll.FIRST());
+        }
+
+        private void Btn_Anterior_Click(object sender, EventArgs e)
+        {
+            SetInfo(obj_Bll.PREVIOUS());
+        }
+
+        private void Btn_Siguiente_Click(object sender, EventArgs e)
+        {
+            SetInfo(obj_Bll.FOLLOWING());
+        }
+
+        private void Btn_Ultimo_Click(object sender, EventArgs e)
+        {
+            SetInfo(obj_Bll.LAST());
+        }
+
+        private void Btn_Buscar_Click(object sender, EventArgs e)
+        {
+            Nimbus_DAL obj_Dal = new Nimbus_DAL();
+            obj_Dal.SIMBOLO = TextBox_Search.Text.Trim();
+            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+        }
+        #endregion
+
+        #region Boton_Limpiar
+        private void Btn_Limpiar_Click(object sender, EventArgs e)
+        {
+            Limpiar();
+        }
         #endregion
 
         #region Botones_Lexico_Sintactico_Semantico
         private void Button_Lexico_Click(object sender, EventArgs e)
         {
+            Limpiar();
             Validar_Tokens();
         }
 
