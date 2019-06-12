@@ -12,3 +12,10 @@ C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimb
 C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_02L\obj\Debug\Nimbus_02L.csprojResolveAssemblyReference.cache
 C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_02L\obj\Debug\Nimbus_02L.dll
 C:\Users\CARLOSANDRESPEREZMED\Documents\GitHub\Modelo_Programacion_Sistemas\Nimbus\Nimbus_02L\obj\Debug\Nimbus_02L.pdb
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas_Alt\Nimbus\Nimbus_02L\bin\Debug\Nimbus_02L.dll
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas_Alt\Nimbus\Nimbus_02L\bin\Debug\Nimbus_02L.pdb
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas_Alt\Nimbus\Nimbus_02L\bin\Debug\Nimbus_03D.dll
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas_Alt\Nimbus\Nimbus_02L\bin\Debug\Nimbus_03D.pdb
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas_Alt\Nimbus\Nimbus_02L\obj\Debug\Nimbus_02L.csprojResolveAssemblyReference.cache
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas_Alt\Nimbus\Nimbus_02L\obj\Debug\Nimbus_02L.dll
+C:\Users\dmx369zhw\Documents\GitHub\Modelo_Programacion_Sistemas_Alt\Nimbus\Nimbus_02L\obj\Debug\Nimbus_02L.pdb

@@ -100,15 +100,19 @@ namespace Nimbus_02L
                 {
                     dTemp = objTmp;
                 }
-                //else
-                //{
-                //    dTempBll.SAVE(TOKEN.CODIGO, TOKEN.SIMBOLO, TOKEN.TIPO_TOKEN);
-                //    //SEARCH_TOKEN(TOKEN);
-                //}
                 objTmp = objTmp.SIGUIENTE;
             } while (objTmp != objInitial);
             return dTemp;
         }
         #endregion
-    }
+
+        #region Method_Delete
+        public void DELETE_LIST()
+        {
+            objInitial = null;
+            objQueue = null;
+            objTmp = null;
+        }
+        #endregion
+}
 }

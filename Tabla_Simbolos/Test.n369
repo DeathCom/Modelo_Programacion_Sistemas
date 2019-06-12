@@ -1,3 +1,11 @@
 <!_Nimbus_369_Code_!>
-Nimbus_Main(){
-cc abx < 23 res 15.345 }
+Nimbus_Main()
+[
+   [ 
+    w < 10
+    [
+     k < 22
+    ]
+   ]
+  cc abx < 23 res 15.345
+]

@@ -16,17 +16,18 @@ namespace Nimbus_01P
 {
     public partial class Form1 : Form
     {
-        int contador = 1;
+        int contador = 1, lineapalabra;
         string Nombre_Archivo, direccion;
         Nimbus_BLL obj_Bll = new Nimbus_BLL();
         DateTime Hoy = DateTime.Now;
+        int Ambito = 0;
 
         public Form1()
         {
             InitializeComponent();
 
             //Codigo Agregado
-            Mensaje_carga_data();
+            //Mensaje_carga_data();
             Desactivar();
         }
 
@@ -72,31 +73,45 @@ namespace Nimbus_01P
         public void Mensaje_carga_data()
         {
             //MessageBox.Show("Cargue la tabla de Simbolos", "Nimbus 369", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            LoadData();
+            //LoadData();
         }
 
         public void LoadData()
         {
+            contador = 0;
             Nimbus_DAL objTmp = new Nimbus_DAL();
             try
             {
-                OpenFileDialog ofd = new OpenFileDialog();
-                ofd.Title = "csv";
-                ofd.ShowDialog();
-                if (File.Exists(ofd.FileName))
-                {
-                    string[] Lines = File.ReadAllLines(ofd.FileName);
-                    foreach (var line in Lines)
-                    {
-                        var values = line.Split(',');
-                        objTmp.CODIGO = values[0];
-                        objTmp.SIMBOLO = values[1];
-                        objTmp.TIPO_TOKEN = values[2];
-                        obj_Bll.SAVE(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN);
-                        contador++;
-                    }
-                }
+                //OpenFileDialog ofd = new OpenFileDialog();
+                //ofd.Title = "csv";
+                //ofd.ShowDialog();
+                //if (File.Exists(ofd.FileName))
+                //{
+                //    string[] Lines = File.ReadAllLines(ofd.FileName);
+                //    foreach (var line in Lines)
+                //    {
+                //        var values = line.Split(',');
+                //        objTmp.CODIGO = values[0];
+                //        objTmp.SIMBOLO = values[1];
+                //        objTmp.TIPO_TOKEN = values[2];
+                //        obj_Bll.SAVE(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN);
+                //        contador++;
+                //    }
+                //}
+                //ofd.Dispose();
                 //MessageBox.Show("Lenguaje cargado.");
+                /////////////////////////////////////////////////////////////////////////////////////////
+                string[] Lines = File.ReadAllLines("C:\\Users\\dmx369zhw\\Documents\\GitHub\\Modelo_Programacion_Sistemas\\Tabla_Simbolos\\Tabla_Simbolos.csv"); 
+                foreach (var line in Lines)
+                {
+                    var values = line.Split(',');
+                    objTmp.CODIGO = values[0];
+                    objTmp.SIMBOLO = values[1];
+                    objTmp.TIPO_TOKEN = values[2];
+                    obj_Bll.SAVE(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN);
+                    contador++;
+                }
+
             }
             catch (Exception)
             {
@@ -132,6 +147,8 @@ namespace Nimbus_01P
             {
                 Activar();
                 dataGridView1.Rows.Clear();
+                dataGridView2.Rows.Clear();
+
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.Title = "Nimbus_369";
                 ofd.ShowDialog();
@@ -143,7 +160,6 @@ namespace Nimbus_01P
                         Nombre_Archivo = ofd.FileName;
                         direccion = ofd.FileName;
                         tabControl1.Visible = true;
-
                     }
                 }
             }
@@ -162,6 +178,7 @@ namespace Nimbus_01P
                 Activar();
                 Panel_Codigo.Clear();
                 dataGridView1.Rows.Clear();
+                dataGridView2.Rows.Clear();
                 Panel_Codigo.Text = "<!_Nimbus_369_Code_!> Nimbus_Main() [ ]";
             }
             catch (Exception)
@@ -180,7 +197,7 @@ namespace Nimbus_01P
                 {
                     if (File.Exists(Salvar_Archivo.FileName))
                     {
-                        //Archivo Si existe
+                        //Si existe el archivo
                         StreamWriter codigonuevo = File.CreateText(Salvar_Archivo.FileName);
                         codigonuevo.Write(Panel_Codigo.Text);
                         codigonuevo.Flush();
@@ -190,7 +207,7 @@ namespace Nimbus_01P
                     }
                     else
                     {
-                        //Archivo no existe
+                        //No existe el archivo
                         StreamWriter codigonuevo = File.CreateText(Salvar_Archivo.FileName);
                         codigonuevo.Write(Panel_Codigo.Text);
                         codigonuevo.Flush();
@@ -287,11 +304,25 @@ namespace Nimbus_01P
         #endregion
 
         #region Metodo_Colocar_Pintar_Tabla_Simbolos
-        public void SetInfo(Nimbus_DAL objTmp)
+        public void SetInfo(Nimbus_DAL objTmp, int Ambito)
         {
             try
             {
-                dataGridView1.Rows.Add(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN);
+                dataGridView1.Rows.Add(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN, Ambito);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error en Token");
+            }
+        }
+        #endregion
+
+        #region Metodo_Colocar_Pintar_Tabla_Errores
+        public void SetInfoError(Nimbus_DAL objTmp, int Ambito, string Error, int lineapalabra)
+        {
+            try
+            {
+                dataGridView2.Rows.Add(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN, Ambito, Error, lineapalabra);
             }
             catch (Exception)
             {
@@ -315,62 +346,126 @@ namespace Nimbus_01P
         }
         #endregion
 
-        #region Metodo_Validar_Token_LLenar_Tabla_Token
-        public void Validar_Tokens()
+        #region Analisis_Lexico
+        public void Lexico()
         {
+            Ambito = 0;
+            LoadData();
+
             Nimbus_DAL obj_Dal = new Nimbus_DAL();
             Nimbus_DAL obj_temp = new Nimbus_DAL();
-            string test = "hh", temp = "jj";
+            string Simbol = "hh", Token = "jj";
+            char[] delimitador = {' ', '\n'}; //   \udddd \xA
+
 
             string Frase = Panel_Codigo.Text;
             //MessageBox.Show(Frase);
-            string[] Palabras = Frase.Split(' ', '\n');
-
+            string[] Palabras = Frase.Split(delimitador);
+            
             foreach (var palabra in Palabras)
             {
-                //System.Console.WriteLine($"<{word}>");
-                obj_Dal.SIMBOLO = palabra;
-                temp = palabra;
+                lineapalabra = Panel_Codigo.Find(palabra);
+                obj_Dal.SIMBOLO = palabra.Trim();
+                Token = palabra.Trim();
 
                 obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
-                test = obj_temp.SIMBOLO;
+                Simbol = obj_temp.SIMBOLO;
 
-                if (test == string.Empty || test == null)
+                #region Control de Ambito
+                if (Token.Equals("["))
                 {
-                    if(temp != string.Empty || temp == null)
+                    Ambito = Ambito + 1;
+                }          
+                if (Token.Equals("]"))
+                {
+                    Ambito = Ambito - 1;
+                }
+                #endregion
+
+                if (Simbol == string.Empty || Simbol == null)
+                {
+                    if (Token != string.Empty || Token != null)
                     {
-                        char[] letras = temp.ToCharArray();
-                        foreach(var letra in letras)
+                        bool vacio = true;
+                        char[] letras = Token.ToCharArray();
+
+                        foreach (var letra in letras)
                         {
-                            if (char.IsNumber(letra) == true)
+                            if (!letra.Equals(" "))
                             {
-                                if (ValidaEntero(temp))
+                                if (char.IsNumber(letra) == true)
                                 {
-                                    obj_Dal.TIPO_TOKEN = "Digito Entero";
+                                    if (ValidaEntero(Token))
+                                    {
+                                        obj_Dal.TIPO_TOKEN = "Digito Entero";
+                                    }
+                                    else
+                                    {
+                                        obj_Dal.TIPO_TOKEN = "Digito Flotante";
+                                    }
                                 }
                                 else
                                 {
-                                    obj_Dal.TIPO_TOKEN = "Digito Flotante";
+                                    obj_Dal.TIPO_TOKEN = "Variable";
                                 }
+                                vacio = false;
                             }
-                            else
-                            {
-                                obj_Dal.TIPO_TOKEN = "Variable";
-                            }
+                            
+                        }
+                        if(vacio == false)
+                        {
+                            obj_Dal.CODIGO = Convert.ToString(contador);
+                            obj_Dal.SIMBOLO = Token;
+                            obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN);
+                            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal), Ambito);
+                            contador = contador + 1;
                         }
                         
-                        obj_Dal.CODIGO = Convert.ToString(contador);
-                        obj_Dal.SIMBOLO = temp;
-                        obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN);
-                        SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                        contador = contador + 1;
                     }
                 }
                 else
                 {
-                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                    if (obj_temp.TIPO_TOKEN.Equals("Inicio_de_Programa") ||
+                    obj_temp.TIPO_TOKEN.Equals("Funcion_Principal") ||
+                    obj_temp.TIPO_TOKEN.Equals("Apertura_Ambito") ||
+                    obj_temp.TIPO_TOKEN.Equals("Cierre_Ambito") ||
+                    obj_temp.TIPO_TOKEN.Equals("Signo_de_Puntuacion") ||
+                    obj_temp.TIPO_TOKEN.Equals("Constante") ||
+                    obj_temp.TIPO_TOKEN.Equals("Comentario") ||
+                    obj_temp.TIPO_TOKEN.Equals("Concatenacion") ||
+                    obj_temp.TIPO_TOKEN.Equals("Asignacion") ||
+                    obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") ||
+                    obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") ||
+                    obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") ||
+                    obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") ||
+                    obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") ||
+                    obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") ||
+                    obj_temp.TIPO_TOKEN.Equals("Operador_Logico") ||
+                    obj_temp.TIPO_TOKEN.Equals("Secuencia_escape") ||
+                    obj_temp.TIPO_TOKEN.Equals("Condicional") ||
+                    obj_temp.TIPO_TOKEN.Equals("Ciclo") ||
+                    obj_temp.TIPO_TOKEN.Equals("Declarador_de_Funcion") ||
+                    obj_temp.TIPO_TOKEN.Equals("Retorno_Funcion") ||
+                    obj_temp.TIPO_TOKEN.Equals("Declarador_de_Procedimiento")
+                    )
+                    {
+                            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal), Ambito);
+                    }
+                    else
+                    {
+                        //SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal), lineapalabra);
+                        //if(Simbol)
+                        string error = "Variable ya existente";
+                        SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), Ambito, error, lineapalabra);
+                    }
                 }
             }
+            if (Ambito != 0)
+            {
+                string error = "Fata cierre de Ambito";
+                SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), Ambito, error, lineapalabra);
+            }
+            obj_Bll.DELETE_LIST();
         }
         #endregion
 
@@ -394,7 +489,8 @@ namespace Nimbus_01P
             {
                 TSimbolos.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t"
                                 + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t"
-                                + dataGridView1.Rows[i].Cells[2].Value.ToString() + "\t");
+                                + dataGridView1.Rows[i].Cells[2].Value.ToString() + "\t"
+                                + dataGridView1.Rows[i].Cells[3].Value.ToString() + "\t");
             }
             TSimbolos.Close();
             
@@ -411,9 +507,12 @@ namespace Nimbus_01P
             int rowcount = dataGridView2.Rows.Count;
             for (int i = 0; i < rowcount - 1; i++)
             {
-                TErrores.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t"
-                                + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t"
-                                + dataGridView1.Rows[i].Cells[2].Value.ToString() + "\t");
+                TErrores.WriteLine(dataGridView2.Rows[i].Cells[0].Value.ToString() + "\t"
+                                + dataGridView2.Rows[i].Cells[1].Value.ToString() + "\t"
+                                + dataGridView2.Rows[i].Cells[2].Value.ToString() + "\t"
+                                + dataGridView2.Rows[i].Cells[3].Value.ToString() + "\t"
+                                + dataGridView2.Rows[i].Cells[4].Value.ToString() + "\t"
+                                + dataGridView2.Rows[i].Cells[5].Value.ToString() + "\t");
             }
             TErrores.Close();
         }
@@ -422,21 +521,24 @@ namespace Nimbus_01P
         #region Metodo_salir
         public void Salir()
         {
-            if (MessageBox.Show("Desea Salir y Guardar las Tablas?", "Confirm User Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Desea Guardar las Tablas?", "Confirm User Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 int rowcount1 = dataGridView1.Rows.Count;
                 int rowcount2 = dataGridView1.Rows.Count;
                 if (dataGridView1.Visible || dataGridView2.Visible)
-                    if(rowcount1 > 0 || rowcount2 > 0)
                 {
-                    Salvar_tablas();
+                    if (rowcount1 > 0 || rowcount2 > 0)
+                    {
+                        Salvar_tablas();
+                    }
                 }
                 System.Windows.Forms.Application.Exit();
+
             }
-            //else
-            //{
-            //    System.Windows.Forms.Application.Exit();
-            //}
+            else
+            {
+                System.Windows.Forms.Application.Exit();
+            }
         }
         #endregion
 
@@ -493,29 +595,29 @@ namespace Nimbus_01P
         #region Botones_desplazamiento y busqueda
         private void Btn_Primero_Click(object sender, EventArgs e)
         {
-            SetInfo(obj_Bll.FIRST());
+            //SetInfo(obj_Bll.FIRST(), lineapalabra);
         }
 
         private void Btn_Anterior_Click(object sender, EventArgs e)
         {
-            SetInfo(obj_Bll.PREVIOUS());
+            //SetInfo(obj_Bll.PREVIOUS(), lineapalabra);
         }
 
         private void Btn_Siguiente_Click(object sender, EventArgs e)
         {
-            SetInfo(obj_Bll.FOLLOWING());
+            //SetInfo(obj_Bll.FOLLOWING(), lineapalabra);
         }
 
         private void Btn_Ultimo_Click(object sender, EventArgs e)
         {
-            SetInfo(obj_Bll.LAST());
+            //SetInfo(obj_Bll.LAST(), lineapalabra);
         }
 
         private void Btn_Buscar_Click(object sender, EventArgs e)
         {
             Nimbus_DAL obj_Dal = new Nimbus_DAL();
             obj_Dal.SIMBOLO = TextBox_Search.Text.Trim();
-            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+            //SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal), lineapalabra);
         }
         #endregion
 
@@ -530,12 +632,12 @@ namespace Nimbus_01P
         private void Button_Lexico_Click(object sender, EventArgs e)
         {
             Limpiar();
-            Validar_Tokens();
+            Lexico();
         }
 
         private void Button_Sintactico_Click(object sender, EventArgs e)
         {
-
+            Limpiar();
         }
 
         private void Button_Semantico_Click(object sender, EventArgs e)
