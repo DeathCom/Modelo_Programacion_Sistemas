@@ -11,6 +11,7 @@ namespace Nimbus_03D
         private string Codigo;
         private string Simbolo;
         private string Tipo_Token;
+        private int Ambito;
         private Nimbus_DAL Anterior;
         private Nimbus_DAL Siguiente;
 
@@ -53,6 +54,18 @@ namespace Nimbus_03D
             }
         }
 
+        public int AMBITO
+        {
+            get
+            {
+                return Ambito;
+            }
+
+            set
+            {
+                Ambito = value;
+            }
+        }
         public Nimbus_DAL ANTERIOR
         {
             get
@@ -78,5 +91,7 @@ namespace Nimbus_03D
                 Siguiente = value;
             }
         }
+
+        
     }
 }

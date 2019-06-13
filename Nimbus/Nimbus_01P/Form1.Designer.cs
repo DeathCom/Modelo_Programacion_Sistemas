@@ -59,17 +59,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.Panel_Codigo = new System.Windows.Forms.RichTextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.Id_Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Simbolo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tipo_Simbolo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tipo_Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -384,57 +379,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(376, 457);
             this.dataGridView1.TabIndex = 3;
             // 
-            // dataGridView2
-            // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Id_Token,
-            this.Simbolo,
-            this.Tipo_Simbolo,
-            this.Column3,
-            this.Error,
-            this.Column2});
-            this.dataGridView2.Location = new System.Drawing.Point(0, 366);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(733, 166);
-            this.dataGridView2.TabIndex = 4;
-            // 
-            // Id_Token
-            // 
-            this.Id_Token.HeaderText = "Id Token";
-            this.Id_Token.Name = "Id_Token";
-            this.Id_Token.Width = 90;
-            // 
-            // Simbolo
-            // 
-            this.Simbolo.HeaderText = "Token";
-            this.Simbolo.Name = "Simbolo";
-            // 
-            // Tipo_Simbolo
-            // 
-            this.Tipo_Simbolo.HeaderText = "Lexema";
-            this.Tipo_Simbolo.Name = "Tipo_Simbolo";
-            this.Tipo_Simbolo.Width = 150;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Ambito";
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 55;
-            // 
-            // Error
-            // 
-            this.Error.HeaderText = "Error";
-            this.Error.Name = "Error";
-            this.Error.ReadOnly = true;
-            this.Error.Width = 200;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Posicion";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 95;
-            // 
             // Id
             // 
             this.Id.HeaderText = "Id";
@@ -461,6 +405,23 @@
             this.Column1.HeaderText = "Ambito";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Error});
+            this.dataGridView2.Location = new System.Drawing.Point(0, 366);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(733, 166);
+            this.dataGridView2.TabIndex = 4;
+            // 
+            // Error
+            // 
+            this.Error.HeaderText = "Error";
+            this.Error.Name = "Error";
+            this.Error.ReadOnly = true;
+            this.Error.Width = 732;
             // 
             // Form1
             // 
@@ -528,16 +489,11 @@
         private System.Windows.Forms.ToolStripButton Btn_Limpiar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id_Token;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Simbolo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Tipo_Simbolo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Error;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.DataGridViewTextBoxColumn Token;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tipo_Token;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Error;
     }
 }
 

@@ -14,12 +14,14 @@ namespace Nimbus_02L
         private Nimbus_DAL objTmp;
 
         #region Method_FILL
-        public Nimbus_DAL FILL(string Codigo, string Simbolo, string Tipo_Token, Nimbus_DAL Anterior, Nimbus_DAL Siguiente)
+        public Nimbus_DAL FILL(string Codigo, string Simbolo, string Tipo_Token, int Ambito, 
+            Nimbus_DAL Anterior, Nimbus_DAL Siguiente)
         {
             Nimbus_DAL dTemp = new Nimbus_DAL();
             dTemp.CODIGO = Codigo;
             dTemp.SIMBOLO = Simbolo;
             dTemp.TIPO_TOKEN = Tipo_Token;
+            dTemp.AMBITO = Ambito;
             dTemp.ANTERIOR = Anterior;
             dTemp.SIGUIENTE = Siguiente;
             return dTemp;
@@ -27,17 +29,17 @@ namespace Nimbus_02L
         #endregion
 
         #region Method_Save
-        public void SAVE(string Codigo, string Simbolo, string Tipo_Token)
+        public void SAVE(string Codigo, string Simbolo, string Tipo_Token, int Ambito)
         {
             if (objInitial == null)
             {
-                objInitial = FILL(Codigo, Simbolo, Tipo_Token, null, null);
+                objInitial = FILL(Codigo, Simbolo, Tipo_Token, Ambito, null, null);
                 objQueue = objInitial;
                 objTmp = objInitial;
             }
             else
             {
-                objQueue.SIGUIENTE = FILL(Codigo, Simbolo, Tipo_Token, objQueue, objInitial);
+                objQueue.SIGUIENTE = FILL(Codigo, Simbolo, Tipo_Token, Ambito, objQueue, objInitial);
                 objQueue = objQueue.SIGUIENTE;
                 objInitial.ANTERIOR = objQueue;
             }
@@ -93,7 +95,6 @@ namespace Nimbus_02L
         {
             objTmp = objInitial;
             Nimbus_DAL dTemp = new Nimbus_DAL();
-            Nimbus_BLL dTempBll = new Nimbus_BLL();
             do
             {
                 if (objTmp.SIMBOLO.Equals(TOKEN.SIMBOLO))
@@ -114,5 +115,21 @@ namespace Nimbus_02L
             objTmp = null;
         }
         #endregion
-}
+
+        #region Method_Modify
+        public void MODIFICAR(Nimbus_DAL TOKEN)
+        {
+            objTmp = objInitial;
+            do
+            {
+                if (objTmp.SIMBOLO.Equals(TOKEN.SIMBOLO))
+                {
+                    objTmp.AMBITO = TOKEN.AMBITO;
+                    break;
+                }
+                objTmp = objTmp.SIGUIENTE;
+            } while (objTmp != objInitial);
+        }
+        #endregion
+    }
 }

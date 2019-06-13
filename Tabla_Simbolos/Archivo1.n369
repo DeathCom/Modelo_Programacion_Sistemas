@@ -1,8 +1,0 @@
- <!_Nimbus_369_Code_!>
- Nimbus_Main(){
- en a < 20
- en b < 3
- en c < 0
- c < a sum b
- }
- 

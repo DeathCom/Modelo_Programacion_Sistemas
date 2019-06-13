@@ -64,7 +64,7 @@ namespace Nimbus_01P
             guardarComoToolStripMenuItem.Enabled = true;
 
             Button_Lexico.Visible = true;
-            Button_Sintactico.Visible = false;
+            Button_Sintactico.Visible = true;
             Button_Semantico.Visible = false;
         }
         #endregion
@@ -108,7 +108,8 @@ namespace Nimbus_01P
                     objTmp.CODIGO = values[0];
                     objTmp.SIMBOLO = values[1];
                     objTmp.TIPO_TOKEN = values[2];
-                    obj_Bll.SAVE(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN);
+                    objTmp.AMBITO = Convert.ToInt32(values[3]);
+                    obj_Bll.SAVE(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN, objTmp.AMBITO);
                     contador++;
                 }
 
@@ -120,6 +121,8 @@ namespace Nimbus_01P
             }
         }
         #endregion
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
 
         #region Metodo_Leer_Archivo
         public void Leer_archivo(string NombreArchivo)
@@ -248,6 +251,8 @@ namespace Nimbus_01P
         }
         #endregion
 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
         #region Metodo_Colocar_Numero_Linea
         private void Panel_Codigo_VScroll(object sender, EventArgs e)
         {
@@ -303,30 +308,26 @@ namespace Nimbus_01P
         }
         #endregion
 
-        #region Metodo_Colocar_Pintar_Tabla_Simbolos
-        public void SetInfo(Nimbus_DAL objTmp, int Ambito)
+        #region Metodo_salir
+        public void Salir()
         {
-            try
+            if (MessageBox.Show("Desea Guardar las Tablas?", "Confirm User Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                dataGridView1.Rows.Add(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN, Ambito);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error en Token");
-            }
-        }
-        #endregion
+                int rowcount1 = dataGridView1.Rows.Count;
+                int rowcount2 = dataGridView1.Rows.Count;
+                if (dataGridView1.Visible || dataGridView2.Visible)
+                {
+                    if (rowcount1 > 0 || rowcount2 > 0)
+                    {
+                        Salvar_tablas();
+                    }
+                }
+                System.Windows.Forms.Application.Exit();
 
-        #region Metodo_Colocar_Pintar_Tabla_Errores
-        public void SetInfoError(Nimbus_DAL objTmp, int Ambito, string Error, int lineapalabra)
-        {
-            try
-            {
-                dataGridView2.Rows.Add(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN, Ambito, Error, lineapalabra);
             }
-            catch (Exception)
+            else
             {
-                MessageBox.Show("Error en Token");
+                System.Windows.Forms.Application.Exit();
             }
         }
         #endregion
@@ -345,6 +346,84 @@ namespace Nimbus_01P
             }
         }
         #endregion
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+        #region Metodo_SetInfo
+        public void SetInfo(Nimbus_DAL objTmp)
+        {
+            try
+            {
+                dataGridView1.Rows.Add(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN, objTmp.AMBITO);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error en Token");
+            }
+        }
+        #endregion
+
+        #region Metodo_SetInfoError
+        public void SetInfoError(Nimbus_DAL objTmp, string Error, int lineapalabra)
+        {
+            try
+            {
+                string error = "Id del Token: " + objTmp.CODIGO + ", Token: " + objTmp.SIMBOLO + ", Ambito: " + objTmp.AMBITO
+                    + ", Error: " + Error + ", Posición: " + lineapalabra;
+                dataGridView2.Rows.Add(error);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error en Token");
+            }
+        }
+        #endregion
+
+        #region Metodo_Guardar_tabla_Simbolos_Tabla_Errores
+        public void Salvar_tablas()
+        {
+            Guardar_tabla_Simbolos();
+            Guardar_tabla_Errores();
+            MessageBox.Show("Datos Exportados a C:\\Nimbus");
+        }
+        public void Guardar_tabla_Simbolos()
+        {
+            if (!Directory.Exists(@"C:\Nimbus\Tabla_Simbolos"))
+            {
+                Directory.CreateDirectory(@"C:\Nimbus\Tabla_Simbolos");
+            }
+
+            TextWriter TSimbolos = new StreamWriter(@"C:\Nimbus\Tabla_Simbolos\Tabla_Simbolos_" + Hoy.Month + Hoy.Day + Hoy.Year + "_" + Hoy.Hour + Hoy.Minute + Hoy.Second + ".txt");
+            int rowcount = dataGridView1.Rows.Count;
+            for (int i = 0; i < rowcount - 1; i++)
+            {
+                TSimbolos.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t"
+                                + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t"
+                                + dataGridView1.Rows[i].Cells[2].Value.ToString() + "\t"
+                                + dataGridView1.Rows[i].Cells[3].Value.ToString() + "\t");
+            }
+            TSimbolos.Close();
+
+        }
+
+        public void Guardar_tabla_Errores()
+        {
+            if (!Directory.Exists(@"C:\Nimbus\Tabla_Errores"))
+            {
+                Directory.CreateDirectory(@"C:\Nimbus\Tabla_Errores");
+            }
+
+            TextWriter TErrores = new StreamWriter(@"C:\Nimbus\Tabla_Errores\Tabla_Errores_" + Hoy.Month + Hoy.Day + Hoy.Year + "_" + Hoy.Hour + Hoy.Minute + Hoy.Second + ".txt");
+            int rowcount = dataGridView2.Rows.Count;
+            for (int i = 0; i < rowcount - 1; i++)
+            {
+                TErrores.WriteLine(dataGridView2.Rows[i].Cells[0].Value.ToString() + "\t");
+            }
+            TErrores.Close();
+        }
+        #endregion
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
 
         #region Analisis_Lexico
         public void Lexico()
@@ -416,8 +495,9 @@ namespace Nimbus_01P
                         {
                             obj_Dal.CODIGO = Convert.ToString(contador);
                             obj_Dal.SIMBOLO = Token;
-                            obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN);
-                            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal), Ambito);
+                            obj_Dal.AMBITO = Ambito;
+                            obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN, obj_Dal.AMBITO);
+                            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
                             contador = contador + 1;
                         }
                         
@@ -425,123 +505,191 @@ namespace Nimbus_01P
                 }
                 else
                 {
-                    if (obj_temp.TIPO_TOKEN.Equals("Inicio_de_Programa") ||
-                    obj_temp.TIPO_TOKEN.Equals("Funcion_Principal") ||
-                    obj_temp.TIPO_TOKEN.Equals("Apertura_Ambito") ||
-                    obj_temp.TIPO_TOKEN.Equals("Cierre_Ambito") ||
-                    obj_temp.TIPO_TOKEN.Equals("Signo_de_Puntuacion") ||
-                    obj_temp.TIPO_TOKEN.Equals("Constante") ||
-                    obj_temp.TIPO_TOKEN.Equals("Comentario") ||
-                    obj_temp.TIPO_TOKEN.Equals("Concatenacion") ||
-                    obj_temp.TIPO_TOKEN.Equals("Asignacion") ||
-                    obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") ||
-                    obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") ||
-                    obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") ||
-                    obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") ||
-                    obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") ||
-                    obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") ||
-                    obj_temp.TIPO_TOKEN.Equals("Operador_Logico") ||
-                    obj_temp.TIPO_TOKEN.Equals("Secuencia_escape") ||
-                    obj_temp.TIPO_TOKEN.Equals("Condicional") ||
-                    obj_temp.TIPO_TOKEN.Equals("Ciclo") ||
-                    obj_temp.TIPO_TOKEN.Equals("Declarador_de_Funcion") ||
-                    obj_temp.TIPO_TOKEN.Equals("Retorno_Funcion") ||
-                    obj_temp.TIPO_TOKEN.Equals("Declarador_de_Procedimiento")
-                    )
+                    if (obj_temp.TIPO_TOKEN.Equals("Inicio_de_Programa") || obj_temp.TIPO_TOKEN.Equals("Funcion_Principal") ||
+                    obj_temp.TIPO_TOKEN.Equals("Apertura_Ambito") || obj_temp.TIPO_TOKEN.Equals("Cierre_Ambito") ||
+                    obj_temp.TIPO_TOKEN.Equals("Signo_de_Puntuacion") || obj_temp.TIPO_TOKEN.Equals("Constante") ||
+                    obj_temp.TIPO_TOKEN.Equals("Comentario") || obj_temp.TIPO_TOKEN.Equals("Concatenacion") ||
+                    obj_temp.TIPO_TOKEN.Equals("Asignacion") || obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") ||
+                    obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") || obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") ||
+                    obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") || obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") ||
+                    obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") || obj_temp.TIPO_TOKEN.Equals("Operador_Logico") ||
+                    obj_temp.TIPO_TOKEN.Equals("Secuencia_escape") || obj_temp.TIPO_TOKEN.Equals("Condicional") ||
+                    obj_temp.TIPO_TOKEN.Equals("Ciclo") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Funcion") ||
+                    obj_temp.TIPO_TOKEN.Equals("Retorno_Funcion") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Procedimiento") ||
+                    obj_temp.TIPO_TOKEN.Equals("Delimitador_de_Sentencia"))
                     {
-                            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal), Ambito);
+                        obj_temp.AMBITO = Ambito;
+                        obj_Bll.MODIFICAR(obj_temp);
+                        SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+
                     }
                     else
                     {
-                        //SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal), lineapalabra);
-                        //if(Simbol)
-                        string error = "Variable ya existente";
-                        SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), Ambito, error, lineapalabra);
+                        if (obj_temp.AMBITO == Ambito)
+                        {
+                            string error = "Variable ya existente";
+                            SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
+                        }
+                        else
+                        {
+                            obj_temp.AMBITO = Ambito;
+                            obj_Bll.MODIFICAR(obj_temp);
+                            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                        }
                     }
                 }
             }
+
             if (Ambito != 0)
             {
                 string error = "Fata cierre de Ambito";
-                SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), Ambito, error, lineapalabra);
+                SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
             }
             obj_Bll.DELETE_LIST();
         }
         #endregion
 
-        #region Metodo_Guardar_tabla_Simbolos_Tabla_Errores
-        public void Salvar_tablas()
-        {
-            Guardar_tabla_Simbolos();
-            Guardar_tabla_Errores();
-            MessageBox.Show("Datos Exportados a C:\\Nimbus");
-        }
-        public void Guardar_tabla_Simbolos()
-        {
-            if (!Directory.Exists(@"C:\Nimbus\Tabla_Simbolos"))
-            {
-                Directory.CreateDirectory(@"C:\Nimbus\Tabla_Simbolos");
-            }
+        ///////////////////////////////////////////////////////////////////////////////////////////
 
-            TextWriter TSimbolos = new StreamWriter(@"C:\Nimbus\Tabla_Simbolos\Tabla_Simbolos_"+ Hoy.Month + Hoy.Day + Hoy.Year +"_"+ Hoy.Hour + Hoy.Minute + Hoy.Second + ".txt");
-            int rowcount = dataGridView1.Rows.Count;
-            for (int i = 0; i < rowcount - 1; i++)
-            {
-                TSimbolos.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t"
-                                + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t"
-                                + dataGridView1.Rows[i].Cells[2].Value.ToString() + "\t"
-                                + dataGridView1.Rows[i].Cells[3].Value.ToString() + "\t");
-            }
-            TSimbolos.Close();
+        #region Analisis_Sintactico
+        public void Sintactico()
+        {
+            Ambito = 0;
+            LoadData();
+
+            Nimbus_DAL obj_Dal = new Nimbus_DAL();
+            Nimbus_DAL obj_temp = new Nimbus_DAL();
+            //string Simbol = "hh", Token = "jj";
+            char[] delimitador = {'\udddd', '\xA' }; //   \udddd \xA
+
+
+            string Frase = Panel_Codigo.Text;
             
-        }
+            string[] Palabras = Frase.Split(delimitador);
 
-        public void Guardar_tabla_Errores()
-        {
-            if (!Directory.Exists(@"C:\Nimbus\Tabla_Errores"))
+            foreach (var palabra in Palabras)
             {
-                Directory.CreateDirectory(@"C:\Nimbus\Tabla_Errores");
-            }
-
-            TextWriter TErrores = new StreamWriter(@"C:\Nimbus\Tabla_Errores\Tabla_Errores_" + Hoy.Month + Hoy.Day + Hoy.Year + "_" + Hoy.Hour + Hoy.Minute + Hoy.Second + ".txt");
-            int rowcount = dataGridView2.Rows.Count;
-            for (int i = 0; i < rowcount - 1; i++)
-            {
-                TErrores.WriteLine(dataGridView2.Rows[i].Cells[0].Value.ToString() + "\t"
-                                + dataGridView2.Rows[i].Cells[1].Value.ToString() + "\t"
-                                + dataGridView2.Rows[i].Cells[2].Value.ToString() + "\t"
-                                + dataGridView2.Rows[i].Cells[3].Value.ToString() + "\t"
-                                + dataGridView2.Rows[i].Cells[4].Value.ToString() + "\t"
-                                + dataGridView2.Rows[i].Cells[5].Value.ToString() + "\t");
-            }
-            TErrores.Close();
-        }
-        #endregion
-
-        #region Metodo_salir
-        public void Salir()
-        {
-            if (MessageBox.Show("Desea Guardar las Tablas?", "Confirm User Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                int rowcount1 = dataGridView1.Rows.Count;
-                int rowcount2 = dataGridView1.Rows.Count;
-                if (dataGridView1.Visible || dataGridView2.Visible)
+                MessageBox.Show(palabra);
+                Patrones Patron = new Patrones();
+                if (Patrones.VALIDA_CONTEXTO(palabra))
                 {
-                    if (rowcount1 > 0 || rowcount2 > 0)
-                    {
-                        Salvar_tablas();
-                    }
+                    string error = palabra + " Variable declarada correcto";
+                    dataGridView2.Rows.Add(error);
                 }
-                System.Windows.Forms.Application.Exit();
+                else
+                {
+                    string error = palabra + " Variable mal declarada";
+                    dataGridView2.Rows.Add(error);
+                }
 
+                //lineapalabra = Panel_Codigo.Find(palabra);
+                //obj_Dal.SIMBOLO = palabra.Trim();
+                //Token = palabra.Trim();
+
+                //obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
+                //Simbol = obj_temp.SIMBOLO;
+
+                //#region Control de Ambito
+                //if (Token.Equals("["))
+                //{
+                //    Ambito = Ambito + 1;
+                //}
+                //if (Token.Equals("]"))
+                //{
+                //    Ambito = Ambito - 1;
+                //}
+                //#endregion
+
+                //if (Simbol == string.Empty || Simbol == null)
+                //{
+                //    if (Token != string.Empty || Token != null)
+                //    {
+                //        bool vacio = true;
+                //        char[] letras = Token.ToCharArray();
+
+                //        foreach (var letra in letras)
+                //        {
+                //            if (!letra.Equals(" "))
+                //            {
+                //                if (char.IsNumber(letra) == true)
+                //                {
+                //                    if (ValidaEntero(Token))
+                //                    {
+                //                        obj_Dal.TIPO_TOKEN = "Digito Entero";
+                //                    }
+                //                    else
+                //                    {
+                //                        obj_Dal.TIPO_TOKEN = "Digito Flotante";
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    obj_Dal.TIPO_TOKEN = "Variable";
+                //                }
+                //                vacio = false;
+                //            }
+
+                //        }
+                //        if (vacio == false)
+                //        {
+                //            obj_Dal.CODIGO = Convert.ToString(contador);
+                //            obj_Dal.SIMBOLO = Token;
+                //            obj_Dal.AMBITO = Ambito;
+                //            obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN, obj_Dal.AMBITO);
+                //            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                //            contador = contador + 1;
+                //        }
+
+                //    }
+                //}
+                //else
+                //{
+                //    if (obj_temp.TIPO_TOKEN.Equals("Inicio_de_Programa") || obj_temp.TIPO_TOKEN.Equals("Funcion_Principal") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Apertura_Ambito") || obj_temp.TIPO_TOKEN.Equals("Cierre_Ambito") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Signo_de_Puntuacion") || obj_temp.TIPO_TOKEN.Equals("Constante") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Comentario") || obj_temp.TIPO_TOKEN.Equals("Concatenacion") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Asignacion") || obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") || obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") || obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") || obj_temp.TIPO_TOKEN.Equals("Operador_Logico") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Secuencia_escape") || obj_temp.TIPO_TOKEN.Equals("Condicional") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Ciclo") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Funcion") ||
+                //    obj_temp.TIPO_TOKEN.Equals("Retorno_Funcion") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Procedimiento"))
+                //    {
+                //        obj_temp.AMBITO = Ambito;
+                //        obj_Bll.MODIFICAR(obj_temp);
+                //        SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                //    }
+                //    else
+                //    {
+                //        if (obj_temp.AMBITO == Ambito)
+                //        {
+                //            string error = "Variable ya existente";
+                //            SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
+                //        }
+                //        else
+                //        {
+                //            obj_temp.AMBITO = Ambito;
+                //            obj_Bll.MODIFICAR(obj_temp);
+                //            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                //        }
+                //    }
+                //}
             }
-            else
-            {
-                System.Windows.Forms.Application.Exit();
-            }
+
+            //if (Ambito != 0)
+            //{
+            //    string error = "Fata cierre de Ambito";
+            //    SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
+            //}
+            //obj_Bll.DELETE_LIST();
         }
         #endregion
 
+
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
 
         #region ToolStrip_Menu_Principal
         private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
@@ -637,7 +785,8 @@ namespace Nimbus_01P
 
         private void Button_Sintactico_Click(object sender, EventArgs e)
         {
-            Limpiar();
+            //Limpiar();
+            Sintactico();
         }
 
         private void Button_Semantico_Click(object sender, EventArgs e)
