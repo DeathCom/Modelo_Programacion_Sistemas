@@ -1,6 +1,6 @@
 <!_Nimbus_369_Code_!>
 Nimbus_Main()
 [
-ca char1 < 'f' ;
-ca char2 < 'h';
+en flrt < 34 ;
+en flrte < 34 ;
 ]

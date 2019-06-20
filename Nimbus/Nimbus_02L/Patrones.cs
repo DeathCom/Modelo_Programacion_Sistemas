@@ -117,21 +117,21 @@ namespace Nimbus_02L
                     return true;
                 }
                 // Invocacion de Funcion o Procedimiento
-                if (ValidarPorPatron(Entrada, @"(^[\s+]*inv\sF_\w*\(\)\;$)|(^[\s+]*inv\sF_\w*\(\s[\w*\,\s\w*]+\s\)\;$)"))
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*inv\sF_\w*\(\)\;$)|(^[\s+]*inv\sF_\w*\(\s[\w*\,\s\w*]+\s\)\s\;$)"))
                 {
                     return true;
                 }
-                if (ValidarPorPatron(Entrada, @"(^[\s+]*inv\sP_\w*\(\)\;$)|(^[\s+]*inv\sP_\w*\(\s[\w*\,\s\w*]+\s\)\;$)"))
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*inv\sP_\w*\(\)\;$)|(^[\s+]*inv\sP_\w*\(\s[\w*\,\s\w*]+\s\)\s\;$)"))
                 {
                     return true;
                 }
                 // funcion imprimir
-                if (ValidarPorPatron(Entrada, @"(^[\s+]*#=>\(\s\w{1,32}\s\)\s;$)|(^[\s+]*#=>\(\s\'\w{1}\S*\'\s\)\s;$)|(^[\s+]*#=>\(\s\'\w{1}\S*\'\s[\%]{0,1}\s\'\w{1}\S*\'\s\)\s;$)|(^[\s+]*#=>\(\s\'\w{1}\S*\'\s[\%]{0,1}\s\'\w{1}\S*\'\s[\%]{0,1}\s\'\w{1}\S*\'\s\)\s;$)"))
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*#=>\(\s\w{1,32}\s\)\s\;)|(^[\s+]*#=>\(\s[\']{1}[\S\s]+[\']{1}\s\)\s\;)|(^[\s+]*#=>\(\s\w{1}\S*\s(|sum|res|mult|div|modd|exp)\s\w{1}\S*\s\)\s;)|(^[\s+]*#=>\(\s[\']{0,1}[\S\s]+[\']{0,1}\s[\%]{0,1}\s[\']{0,1}[\S\s]+[\']{0,1}\s\)\s;)|(^[\s+]*#=>\(\s\'[\S\s]+[\']{0,1}\s[\%]{0,1}\s[\']{0,1}[\S\s]+\'\s[\%]{0,1}\s[\']{0,1}[\S\s]+[\']{0,1}\s\)\s;)"))
                 {
                     return true;
                 }
                 // funcion capturar
-                if (ValidarPorPatron(Entrada, @"(^[\s+]*#=<\(\s\'[\w*\,\s\w*]+\'\s\)\s;$)"))
+                if (ValidarPorPatron(Entrada, @"^[\s+]*(en|ca|flo)\s\w*\s<\s#<=\(\s\'[\w*\s\w*]+\'\s\)\s\;$"))
                 {
                     return true;
                 }
@@ -171,5 +171,29 @@ namespace Nimbus_02L
             }
         }
         #endregion
+
+        public static bool VALIDA_VARIABLE(string Entrada)
+        {
+            // Entero
+            if (ValidarPorPatron(Entrada, @"^[\s+]*en\s[A-Za-z]{1}\w{0,31}"))
+            {
+                return true;
+            }
+            // flotante
+            if (ValidarPorPatron(Entrada, @"^[\s+]*flo\s[A-Za-z]{1}\w{0,31}"))
+            {
+                return true;
+            }
+
+            // Caracter
+            if (ValidarPorPatron(Entrada, @"^[\s+]*ca\s[A-Za-z]{1}\w{0,31}"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
