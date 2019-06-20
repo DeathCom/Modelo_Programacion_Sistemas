@@ -20,7 +20,7 @@ namespace Nimbus_01P
         string Nombre_Archivo, direccion;
         Nimbus_BLL obj_Bll = new Nimbus_BLL();
         DateTime Hoy = DateTime.Now;
-        int Ambito = 0;
+        int Ambito = 0, CAmbito = 0;
 
         public Form1()
         {
@@ -454,10 +454,11 @@ namespace Nimbus_01P
                 if (Token.Equals("["))
                 {
                     Ambito = Ambito + 1;
+                    //CAmbito = CAmbito + 1;
                 }          
                 if (Token.Equals("]"))
                 {
-                    Ambito = Ambito - 1;
+                   Ambito = Ambito - 1;
                 }
                 #endregion
 
@@ -472,16 +473,20 @@ namespace Nimbus_01P
                         {
                             if (!letra.Equals(" "))
                             {
-                                if (char.IsNumber(letra) == true)
+                                if (char.IsNumber(letra))
                                 {
                                     if (ValidaEntero(Token))
                                     {
-                                        obj_Dal.TIPO_TOKEN = "Digito Entero";
+                                        obj_Dal.TIPO_TOKEN = "Digito_Entero";
                                     }
                                     else
                                     {
-                                        obj_Dal.TIPO_TOKEN = "Digito Flotante";
+                                        obj_Dal.TIPO_TOKEN = "Digito_Flotante";
                                     }
+                                }
+                                else if (char.IsPunctuation(letra))
+                                {
+                                    obj_Dal.TIPO_TOKEN = "Caracter";
                                 }
                                 else
                                 {
@@ -508,15 +513,15 @@ namespace Nimbus_01P
                     if (obj_temp.TIPO_TOKEN.Equals("Inicio_de_Programa") || obj_temp.TIPO_TOKEN.Equals("Funcion_Principal") ||
                     obj_temp.TIPO_TOKEN.Equals("Apertura_Ambito") || obj_temp.TIPO_TOKEN.Equals("Cierre_Ambito") ||
                     obj_temp.TIPO_TOKEN.Equals("Signo_de_Puntuacion") || obj_temp.TIPO_TOKEN.Equals("Constante") ||
-                    obj_temp.TIPO_TOKEN.Equals("Comentario") || obj_temp.TIPO_TOKEN.Equals("Concatenacion") ||
-                    obj_temp.TIPO_TOKEN.Equals("Asignacion") || obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") ||
-                    obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") || obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") ||
-                    obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") || obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") ||
-                    obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") || obj_temp.TIPO_TOKEN.Equals("Operador_Logico") ||
-                    obj_temp.TIPO_TOKEN.Equals("Secuencia_escape") || obj_temp.TIPO_TOKEN.Equals("Condicional") ||
+                    obj_temp.TIPO_TOKEN.Equals("Concatenacion") || obj_temp.TIPO_TOKEN.Equals("Asignacion") || 
+                    obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") || obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") ||
+                    obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") || obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") ||
+                    obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") || obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") || 
+                    obj_temp.TIPO_TOKEN.Equals("Operador_Logico") || obj_temp.TIPO_TOKEN.Equals("Condicional") ||
                     obj_temp.TIPO_TOKEN.Equals("Ciclo") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Funcion") ||
                     obj_temp.TIPO_TOKEN.Equals("Retorno_Funcion") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Procedimiento") ||
-                    obj_temp.TIPO_TOKEN.Equals("Delimitador_de_Sentencia"))
+                    obj_temp.TIPO_TOKEN.Equals("Delimitador_de_Sentencia") || obj_temp.TIPO_TOKEN.Equals("Digito_Entero") ||
+                    obj_temp.TIPO_TOKEN.Equals("Digito_Flotante"))
                     {
                         obj_temp.AMBITO = Ambito;
                         obj_Bll.MODIFICAR(obj_temp);
@@ -785,6 +790,7 @@ namespace Nimbus_01P
 
         private void Button_Sintactico_Click(object sender, EventArgs e)
         {
+            dataGridView2.Rows.Clear();
             //Limpiar();
             Sintactico();
         }

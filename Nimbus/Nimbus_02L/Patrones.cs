@@ -30,31 +30,133 @@ namespace Nimbus_02L
 
         public static bool VALIDA_CONTEXTO(string Entrada)
         {
-            //Entero
-            //^(en\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s;$)|(^en\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s<\s\d{1,32000}\s;$)
-            //Flotante
-            //^(flo\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s;$)|(^flo\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s<\s\d{1,32000}.\d{1,3200}\s;$)
-            //Cadena
-            //^(cc\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s;$)|(^cc\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s<\s\'\w{1,32000}\'\s;$)
-            //Caracter
-            //^(ca\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s;$)|(^ca\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s<\s\'\w{1}\'\s;$)
             try
             {
-                //ValidarPorPatron(INT, @"^[\s+]*en\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s;$") ||
+                //inicio programa
+                if (ValidarPorPatron(Entrada, @"^<!_Nimbus_369_Code_!>$"))
+                {
+                    return true;
+                }
+                //funion principal
+                if (ValidarPorPatron(Entrada, @"^Nimbus_Main\(\)$"))
+                {
+                    return true;
+                }
+                //apertura cierre ambito
+                if (ValidarPorPatron(Entrada, @"^[\s+]*\[$"))
+                {
+                    return true;
+                }
+                if (ValidarPorPatron(Entrada, @"^[\s+]*\]$"))
+                {
+                    return true;
+                }
+                //Constante
+                if (ValidarPorPatron(Entrada, @"^[\s+]*~\sca\s[A-Za-z]{1}\w{0,31}\s<\s\'\S{1}\'\s;$"))
+                {
+                    return true;
+                }
+                if (ValidarPorPatron(Entrada, @"^[\s+]*~\sen\s[A-Za-z]{1}\w{0,31}\s<\s[-]{0,1}\d{1,32000}\s;$"))
+                {
+                    return true;
+                }
+                if (ValidarPorPatron(Entrada, @"^[\s+]*~\sflo\s[A-Za-z]{1}\w{0,31}\s<\s\d{1,32000}.\d{1,999999}\s;$"))
+                {
+                    return true;
+                }
 
-                if (ValidarPorPatron(Entrada, @"^[\s+]*en\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s<\s\d{1,32000}\s;$"))
+                // Encapsulamiento
+                if (ValidarPorPatron(Entrada, @"^[\s+]*\@\sca\s[A-Za-z]{1}\w{0,31}\s<\s\'\S{1}\'\s;$"))
                 {
                     return true;
                 }
-                if(ValidarPorPatron(Entrada, @"^[\s+]*flo\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s<\s\d{1,32000}.\d{1,999999}\s;$"))
+                if (ValidarPorPatron(Entrada, @"^[\s+]*\@\sen\s[A-Za-z]{1}\w{0,31}\s<\s[-]{0,1}\d{1,32000}\s;$"))
                 {
                     return true;
                 }
-                if (ValidarPorPatron(Entrada, @"^[\s+]*cc\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s<\s\'\w{2,32000}\'\s;$"))
+                if (ValidarPorPatron(Entrada, @"^[\s+]*\@\sflo\s[A-Za-z]{1}\w{0,31}\s<\s\d{1,32000}.\d{1,999999}\s;$"))
                 {
                     return true;
                 }
-                if (ValidarPorPatron(Entrada, @"^[\s+]*ca\s[_]{0,1}[A-Za-z]{0,1}\w{0,30}\s<\s\'\w{1}\'\s;$"))
+                if (ValidarPorPatron(Entrada, @"^[\s+]*\@\sF_\w*\(\)$"))
+                {
+                    return true;
+                }
+                if (ValidarPorPatron(Entrada, @"^[\s+]*\@\sP_\w*\(\)$"))
+                {
+                    return true;
+                }
+                if (ValidarPorPatron(Entrada, @"^[\s+]*(\$|\@)\s(P_|F_)\w*\(\s[\w*\,\s\w*]+\s\)$"))
+                {
+                    return true;
+                }
+                // creacion general
+                if (ValidarPorPatron(Entrada, @"^[\s+]*(en|flo|ca)\s[A-Za-z]{1}\w{0,31}\s;$"))
+                {
+                    return true;
+                }
+                // Entero
+                if (ValidarPorPatron(Entrada, @"^[\s+]*en\s[A-Za-z]{1}\w{0,31}\s<\s[-]{0,1}\d{1,32000}\s;$"))
+                {
+                    return true;
+                }
+                // flotante
+                if(ValidarPorPatron(Entrada, @"^[\s+]*flo\s[A-Za-z]{1}\w{0,31}\s<\s\d{1,32000}.\d{1,999999}\s;$"))
+                {
+                    return true;
+                }
+
+                // Caracter
+                if (ValidarPorPatron(Entrada, @"^[\s+]*ca\s[A-Za-z]{1}\w{0,31}\s<\s\'\S{1}\'\s;$"))
+                {
+                    return true;
+                }
+                // Suma resta multiplicacion division modulo y exponente
+                if (ValidarPorPatron(Entrada, @"^[\s+]*[A-Za-z]{0,1}\w{0,30}\s<\s\w{1,33}\s(sum|res|mult|div|modd|exp){1}\s\w{1,33}\s;$"))
+                {
+                    return true;
+                }
+                // Invocacion de Funcion o Procedimiento
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*inv\sF_\w*\(\)\;$)|(^[\s+]*inv\sF_\w*\(\s[\w*\,\s\w*]+\s\)\;$)"))
+                {
+                    return true;
+                }
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*inv\sP_\w*\(\)\;$)|(^[\s+]*inv\sP_\w*\(\s[\w*\,\s\w*]+\s\)\;$)"))
+                {
+                    return true;
+                }
+                // funcion imprimir
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*#=>\(\s\w{1,32}\s\)\s;$)|(^[\s+]*#=>\(\s\'\w{1}\S*\'\s\)\s;$)|(^[\s+]*#=>\(\s\'\w{1}\S*\'\s[\%]{0,1}\s\'\w{1}\S*\'\s\)\s;$)|(^[\s+]*#=>\(\s\'\w{1}\S*\'\s[\%]{0,1}\s\'\w{1}\S*\'\s[\%]{0,1}\s\'\w{1}\S*\'\s\)\s;$)"))
+                {
+                    return true;
+                }
+                // funcion capturar
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*#=<\(\s\'[\w*\,\s\w*]+\'\s\)\s;$)"))
+                {
+                    return true;
+                }
+                // x<condición>[]
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*x<\s\w*\s(eq|dif|maq|meq)\s\w*\s>$)|(^[\s+]*x<\s\w*\s>$)|(^[\s+]*x<\s\w*\s(eq|dif|maq|meq)\s\w*\s(\+|\/)\s\w*\s(eq|dif|maq|meq)\s\w*\s>$)"))
+                {
+                    return true;
+                }
+                // Ciclo zc<
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*zc<\s\w*\s(eq|dif|maq|meq)\s\w*\s>$)|(^[\s+]*zc<\s\w*\s>$)|(^[\s+]*zc<\s\w*\s(eq|dif|maq|meq)\s\w*\s(\+|\/)\s\w*\s(eq|dif|maq|meq)\s\w*\s>$)"))
+                {
+                    return true;
+                }
+                // Decaracion de Funcion
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*F_\w*\(\)$)|(^[\s+]*F_\w*\(\s[\w*\,\s\w*]+\s\)$)"))
+                {
+                    return true;
+                }
+                // Decaracion de Procedimiento
+                if (ValidarPorPatron(Entrada, @"(^[\s+]*P_\w*\(\)$)|(^[\s+]*P_\w*\(\s[\w*\,\s\w*]+\s\)$)"))
+                {
+                    return true;
+                }
+                // retorno de funcion 
+                if (ValidarPorPatron(Entrada, @"^[\s+]*&\s\w{1}\w*\s;$"))
                 {
                     return true;
                 }

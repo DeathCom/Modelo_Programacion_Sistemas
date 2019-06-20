@@ -1,8 +1,29 @@
 <!_Nimbus_369_Code_!>
+F_multiplica( en uno, en dos )
+[
+  flo suma < 0.0 ;
+  suma < uno res dos ;
+  & suma ;
+]
+
 Nimbus_Main()
 [
- en entero < 22 ;
- flo float < 36.5 ;
-ca caracter < 'a' ;
-cc cadena < 'Esto es una Cadena' ;
+~ ca char1 < 'a' ;
+@ en num1 < 23 ;
+ca char2 < 'b' ;
+en num2 < 23 ;
+flo flotante2 < 3.5 ;
+inv F_multiplica( num1, num2 );
+#=>( 'Test' ) ;
+#=>( 100 ) ;
+#=>( 'hola' % 'Adios' ) ;
+#=<( 'Digite un numero entero' ) ;
+x< char1 maq char2 >
+[
+   flo flotante < 50.2 ;
+   zc< 5 meq flotante >
+   [
+     #=>( 'Verdadero' ) ;
+   ]
+]
 ]
