@@ -4,7 +4,7 @@ Nimbus_Main()
 ca caracter < 'a' ;
 en entero < 22 ;
 flo float < 36.5 ;
-   [ 
+   [
      ca caracter < 'a' ;
      en entero < 22 ;
      flo float < 36.5 ;
@@ -14,5 +14,4 @@ flo float < 36.5 ;
        flo float < 36.5 ;
      ]
    ]
-  cc abx < 23 res 15.345 ;
 ]

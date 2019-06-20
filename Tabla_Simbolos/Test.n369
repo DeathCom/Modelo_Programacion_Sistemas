@@ -5,7 +5,6 @@ F_multiplica( en uno, en dos )
   suma < uno res dos ;
   & suma ;
 ]
-
 Nimbus_Main()
 [
 ~ ca char1 < 'a' ;

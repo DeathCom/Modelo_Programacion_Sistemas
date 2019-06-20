@@ -368,7 +368,7 @@ namespace Nimbus_01P
         {
             try
             {
-                string error = "Id del Token: " + objTmp.CODIGO + ", Token: " + objTmp.SIMBOLO + ", Ambito: " + objTmp.AMBITO
+                string error = "Error Lexico, Id del Token: " + objTmp.CODIGO + ", Token: " + objTmp.SIMBOLO + ", Ambito: " + objTmp.AMBITO
                     + ", Error: " + Error + ", Posición: " + lineapalabra;
                 dataGridView2.Rows.Add(error);
             }
@@ -559,140 +559,31 @@ namespace Nimbus_01P
         #region Analisis_Sintactico
         public void Sintactico()
         {
-            Ambito = 0;
-            LoadData();
-
             Nimbus_DAL obj_Dal = new Nimbus_DAL();
             Nimbus_DAL obj_temp = new Nimbus_DAL();
-            //string Simbol = "hh", Token = "jj";
             char[] delimitador = {'\udddd', '\xA' }; //   \udddd \xA
 
-
             string Frase = Panel_Codigo.Text;
-            
             string[] Palabras = Frase.Split(delimitador);
 
             foreach (var palabra in Palabras)
             {
-                MessageBox.Show(palabra);
                 Patrones Patron = new Patrones();
-                if (Patrones.VALIDA_CONTEXTO(palabra))
+                //MessageBox.Show(palabra);
+
+                if (!Patrones.VALIDA_CONTEXTO(palabra))
                 {
-                    string error = palabra + " Variable declarada correcto";
+                    string error = "Error Sintactico, Definición: " + palabra + ", Error en definicion sintactica,  " + "Posición: " + lineapalabra;
                     dataGridView2.Rows.Add(error);
                 }
-                else
-                {
-                    string error = palabra + " Variable mal declarada";
-                    dataGridView2.Rows.Add(error);
-                }
-
-                //lineapalabra = Panel_Codigo.Find(palabra);
-                //obj_Dal.SIMBOLO = palabra.Trim();
-                //Token = palabra.Trim();
-
-                //obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
-                //Simbol = obj_temp.SIMBOLO;
-
-                //#region Control de Ambito
-                //if (Token.Equals("["))
-                //{
-                //    Ambito = Ambito + 1;
-                //}
-                //if (Token.Equals("]"))
-                //{
-                //    Ambito = Ambito - 1;
-                //}
-                //#endregion
-
-                //if (Simbol == string.Empty || Simbol == null)
-                //{
-                //    if (Token != string.Empty || Token != null)
-                //    {
-                //        bool vacio = true;
-                //        char[] letras = Token.ToCharArray();
-
-                //        foreach (var letra in letras)
-                //        {
-                //            if (!letra.Equals(" "))
-                //            {
-                //                if (char.IsNumber(letra) == true)
-                //                {
-                //                    if (ValidaEntero(Token))
-                //                    {
-                //                        obj_Dal.TIPO_TOKEN = "Digito Entero";
-                //                    }
-                //                    else
-                //                    {
-                //                        obj_Dal.TIPO_TOKEN = "Digito Flotante";
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    obj_Dal.TIPO_TOKEN = "Variable";
-                //                }
-                //                vacio = false;
-                //            }
-
-                //        }
-                //        if (vacio == false)
-                //        {
-                //            obj_Dal.CODIGO = Convert.ToString(contador);
-                //            obj_Dal.SIMBOLO = Token;
-                //            obj_Dal.AMBITO = Ambito;
-                //            obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN, obj_Dal.AMBITO);
-                //            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                //            contador = contador + 1;
-                //        }
-
-                //    }
-                //}
                 //else
                 //{
-                //    if (obj_temp.TIPO_TOKEN.Equals("Inicio_de_Programa") || obj_temp.TIPO_TOKEN.Equals("Funcion_Principal") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Apertura_Ambito") || obj_temp.TIPO_TOKEN.Equals("Cierre_Ambito") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Signo_de_Puntuacion") || obj_temp.TIPO_TOKEN.Equals("Constante") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Comentario") || obj_temp.TIPO_TOKEN.Equals("Concatenacion") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Asignacion") || obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") || obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") || obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") || obj_temp.TIPO_TOKEN.Equals("Operador_Logico") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Secuencia_escape") || obj_temp.TIPO_TOKEN.Equals("Condicional") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Ciclo") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Funcion") ||
-                //    obj_temp.TIPO_TOKEN.Equals("Retorno_Funcion") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Procedimiento"))
-                //    {
-                //        obj_temp.AMBITO = Ambito;
-                //        obj_Bll.MODIFICAR(obj_temp);
-                //        SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                //    }
-                //    else
-                //    {
-                //        if (obj_temp.AMBITO == Ambito)
-                //        {
-                //            string error = "Variable ya existente";
-                //            SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
-                //        }
-                //        else
-                //        {
-                //            obj_temp.AMBITO = Ambito;
-                //            obj_Bll.MODIFICAR(obj_temp);
-                //            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                //        }
-                //    }
+                //    string error = palabra + " correcto";
+                //    dataGridView2.Rows.Add(error);
                 //}
             }
-
-            //if (Ambito != 0)
-            //{
-            //    string error = "Fata cierre de Ambito";
-            //    SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
-            //}
-            //obj_Bll.DELETE_LIST();
         }
         #endregion
-
-
-
 
         ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -790,7 +681,7 @@ namespace Nimbus_01P
 
         private void Button_Sintactico_Click(object sender, EventArgs e)
         {
-            dataGridView2.Rows.Clear();
+            //dataGridView2.Rows.Clear();
             //Limpiar();
             Sintactico();
         }
