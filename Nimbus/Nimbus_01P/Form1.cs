@@ -78,7 +78,7 @@ namespace Nimbus_01P
 
         public void LoadData()
         {
-            contador = 0;
+            contador = 1;
             Nimbus_DAL objTmp = new Nimbus_DAL();
             try
             {
@@ -110,7 +110,7 @@ namespace Nimbus_01P
                     objTmp.TIPO_TOKEN = values[2];
                     objTmp.AMBITO = Convert.ToInt32(values[3]);
                     obj_Bll.SAVE(objTmp.CODIGO, objTmp.SIMBOLO, objTmp.TIPO_TOKEN, objTmp.AMBITO);
-                    contador++;
+                    contador = contador + 1;
                 }
 
             }
@@ -457,120 +457,109 @@ namespace Nimbus_01P
                 }
                 #endregion
 
-                if (Patrones.VALIDA_CONTEXTO(oracion))
+                string ora = oracion;
+                //MessageBox.Show(ora);
+
+                string[] Palabras = ora.Split(delimitador);
+
+                foreach (var palabra in Palabras)
                 {
-                    string ora = oracion;
-                    //MessageBox.Show(ora);
+                    obj_Dal.SIMBOLO = palabra.Trim();
+                    Token = palabra.Trim();
 
-                    string[] Palabras = ora.Split(delimitador);
+                    obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
+                    Simbol = obj_temp.SIMBOLO;
 
-                    foreach (var palabra in Palabras)
+                    #region Control de Ambito
+                    if (Token.Equals("["))
                     {
-                        obj_Dal.SIMBOLO = palabra.Trim();
-                        Token = palabra.Trim();
+                        Ambito = Ambito + 1;
+                    }
+                    if (Token.Equals("]"))
+                    {
+                        Ambito = Ambito - 1;
+                    }
+                    #endregion
 
-                        obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
-                        Simbol = obj_temp.SIMBOLO;
+                    if (Simbol == string.Empty || Simbol == null)
+                    {
+                        if (Token != string.Empty || Token != null)
+                        {
+                            bool vacio = true;
+                            char[] letras = Token.ToCharArray();
 
-                        #region Control de Ambito
-                        if (Token.Equals("["))
-                        {
-                            Ambito = Ambito + 1;
-                        }
-                        if (Token.Equals("]"))
-                        {
-                            Ambito = Ambito - 1;
-                        }
-                        #endregion
-
-                        if (Simbol == string.Empty || Simbol == null)
-                        {
-                            if (Token != string.Empty || Token != null)
+                            foreach (var letra in letras)
                             {
-                                bool vacio = true;
-                                char[] letras = Token.ToCharArray();
-
-                                foreach (var letra in letras)
+                                if (!letra.Equals(" "))
                                 {
-                                    if (!letra.Equals(" "))
+                                    if (char.IsNumber(letra))
                                     {
-                                        if (char.IsNumber(letra))
+                                        if (ValidaEntero(Token))
                                         {
-                                            if (ValidaEntero(Token))
-                                            {
-                                                obj_Dal.TIPO_TOKEN = "Digito_Entero";
-                                            }
-                                            else
-                                            {
-                                                obj_Dal.TIPO_TOKEN = "Digito_Flotante";
-                                            }
-                                        }
-                                        else if (char.IsPunctuation(letra))
-                                        {
-                                            obj_Dal.TIPO_TOKEN = "Caracter";
+                                            obj_Dal.TIPO_TOKEN = "Digito_Entero";
                                         }
                                         else
                                         {
-                                            obj_Dal.TIPO_TOKEN = "Definicion_del_Usuario";
+                                            obj_Dal.TIPO_TOKEN = "Digito_Flotante";
                                         }
-                                        vacio = false;
                                     }
+                                    else if (char.IsPunctuation(letra))
+                                    {
+                                        obj_Dal.TIPO_TOKEN = "Caracter";
+                                    }
+                                    else
+                                    {
+                                        obj_Dal.TIPO_TOKEN = "Definicion_del_Usuario";
+                                    }
+                                    vacio = false;
+                                }
 
-                                }
-                                if (vacio == false)
-                                {
-                                    obj_Dal.CODIGO = Convert.ToString(contador);
-                                    obj_Dal.SIMBOLO = Token;
-                                    obj_Dal.AMBITO = Ambito;
-                                    obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN, obj_Dal.AMBITO);
-                                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                                    contador = contador + 1;
-                                }
                             }
+                            if (vacio == false)
+                            {
+                                obj_Dal.CODIGO = Convert.ToString(contador);
+                                obj_Dal.SIMBOLO = Token;
+                                obj_Dal.AMBITO = Ambito;
+                                obj_Bll.SAVE(obj_Dal.CODIGO, obj_Dal.SIMBOLO, obj_Dal.TIPO_TOKEN, obj_Dal.AMBITO);
+                                SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+                                contador = contador + 1;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (obj_temp.TIPO_TOKEN.Equals("Inicio_de_Programa") || obj_temp.TIPO_TOKEN.Equals("Funcion_Principal") ||
+                        obj_temp.TIPO_TOKEN.Equals("Apertura_Ambito") || obj_temp.TIPO_TOKEN.Equals("Cierre_Ambito") ||
+                        obj_temp.TIPO_TOKEN.Equals("Signo_de_Puntuacion") || obj_temp.TIPO_TOKEN.Equals("Constante") ||
+                        obj_temp.TIPO_TOKEN.Equals("Concatenacion") || obj_temp.TIPO_TOKEN.Equals("Asignacion") ||
+                        obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") || obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") ||
+                        obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") || obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") ||
+                        obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") || obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") ||
+                        obj_temp.TIPO_TOKEN.Equals("Operador_Logico") || obj_temp.TIPO_TOKEN.Equals("Condicional") ||
+                        obj_temp.TIPO_TOKEN.Equals("Ciclo") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Funcion") ||
+                        obj_temp.TIPO_TOKEN.Equals("Retorno_Funcion") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Procedimiento") ||
+                        obj_temp.TIPO_TOKEN.Equals("Delimitador_de_Sentencia") || obj_temp.TIPO_TOKEN.Equals("Digito_Entero") ||
+                        obj_temp.TIPO_TOKEN.Equals("Digito_Flotante") || obj_temp.TIPO_TOKEN.Equals("Caracter"))
+                        {
+                            obj_temp.AMBITO = Ambito;
+                            obj_Bll.MODIFICAR(obj_temp);
+                            SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
+
                         }
                         else
                         {
-                            if (obj_temp.TIPO_TOKEN.Equals("Inicio_de_Programa") || obj_temp.TIPO_TOKEN.Equals("Funcion_Principal") ||
-                            obj_temp.TIPO_TOKEN.Equals("Apertura_Ambito") || obj_temp.TIPO_TOKEN.Equals("Cierre_Ambito") ||
-                            obj_temp.TIPO_TOKEN.Equals("Signo_de_Puntuacion") || obj_temp.TIPO_TOKEN.Equals("Constante") ||
-                            obj_temp.TIPO_TOKEN.Equals("Concatenacion") || obj_temp.TIPO_TOKEN.Equals("Asignacion") ||
-                            obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") || obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") ||
-                            obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") || obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") ||
-                            obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") || obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") ||
-                            obj_temp.TIPO_TOKEN.Equals("Operador_Logico") || obj_temp.TIPO_TOKEN.Equals("Condicional") ||
-                            obj_temp.TIPO_TOKEN.Equals("Ciclo") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Funcion") ||
-                            obj_temp.TIPO_TOKEN.Equals("Retorno_Funcion") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Procedimiento") ||
-                            obj_temp.TIPO_TOKEN.Equals("Delimitador_de_Sentencia") || obj_temp.TIPO_TOKEN.Equals("Digito_Entero") ||
-                            obj_temp.TIPO_TOKEN.Equals("Digito_Flotante") || obj_temp.TIPO_TOKEN.Equals("Caracter"))
+                            if (obj_temp.AMBITO == Ambito)
+                            {
+                                string error = "Variable ya fue declarada";
+                                SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
+                            }
+                            else
                             {
                                 obj_temp.AMBITO = Ambito;
                                 obj_Bll.MODIFICAR(obj_temp);
                                 SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-
-                            }
-                            else
-                            {
-                                if (obj_temp.AMBITO == Ambito)
-                                {
-                                    string error = "Variable ya fue declarada";
-                                    SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
-                                }
-                                else
-                                {
-                                    obj_temp.AMBITO = Ambito;
-                                    obj_Bll.MODIFICAR(obj_temp);
-                                    SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal));
-                                }
                             }
                         }
-                    }
-                }
-                else
-                {
-                    if(!oracion.Equals(" "))
-                    {
-                        string error = "- Declaracion desconocida, o no existente en Nimbus, verifique -";
-                        SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
                     }
                 }
             }

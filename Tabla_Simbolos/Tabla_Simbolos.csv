@@ -7,7 +7,7 @@
 7,"""",Signo_de_Puntuacion,0
 8,_,Signo_de_Puntuacion,0
 9,|,Signo_de_Puntuacion,0
-10,>,Signo_de_Puntuacion,1
+10,>,Signo_de_Puntuacion,0
 11,~,Constante,0
 12,%,Concatenacion,0
 13,<,Asignacion,0
