@@ -43,6 +43,7 @@
     <Compile Include="Nimbus_BLL.cs" />
     <Compile Include="Patrones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sentido.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nimbus_03D\Nimbus_03D.csproj">

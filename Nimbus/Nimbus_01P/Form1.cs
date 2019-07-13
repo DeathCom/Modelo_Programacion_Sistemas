@@ -20,7 +20,7 @@ namespace Nimbus_01P
         string Nombre_Archivo, direccion;
         Nimbus_BLL obj_Bll = new Nimbus_BLL();
         DateTime Hoy = DateTime.Now;
-        int Ambito = 0;
+        int Ambito = 0, llave = 0, llaveC = 0;
 
         public Form1()
         {
@@ -428,7 +428,7 @@ namespace Nimbus_01P
         #region Analisis_Lexico
         public void Lexico()
         {
-            Ambito = 0;
+            Ambito = 0; llave = 0; llaveC = 0;
             LoadData();
 
             Nimbus_DAL obj_Dal = new Nimbus_DAL();
@@ -470,14 +470,12 @@ namespace Nimbus_01P
                     obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
                     Simbol = obj_temp.SIMBOLO;
 
-                    #region Control de Ambito
+                    #region Control de Ambito Apertura
                     if (Token.Equals("["))
                     {
-                        Ambito = Ambito + 1;
-                    }
-                    if (Token.Equals("]"))
-                    {
-                        Ambito = Ambito - 1;
+                        llave = llave + 1;
+                        Ambito = llave;
+                        //Ambito = Ambito + 1;
                     }
                     #endregion
 
@@ -561,9 +559,19 @@ namespace Nimbus_01P
                             }
                         }
                     }
+                    #region Control de Ambito Cierre
+                    if (Token.Equals("]"))
+                    {
+                        llaveC = llaveC + 1;
+                        Ambito = Ambito - llaveC;
+                        if (Ambito < 0)
+                            Ambito = 1;
+                        //Ambito = Ambito - 1;
+                    }
+                    #endregion
                 }
             }
-            if (Ambito != 0)
+            if (llaveC != llave)
             {
                 string error = "- Fata cierre o apertura de Ambito -";
                 SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
@@ -595,6 +603,15 @@ namespace Nimbus_01P
                     dataGridView2.Rows.Add(error);
                 }
             }
+        }
+        #endregion
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+        #region Analisis_Semantico
+        public void Semantico()
+        {
+
         }
         #endregion
 

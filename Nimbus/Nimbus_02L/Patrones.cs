@@ -42,12 +42,17 @@ namespace Nimbus_02L
                 {
                     return true;
                 }
-                //apertura cierre ambito
+                //apertura - cierre ambito
                 if (ValidarPorPatron(Entrada, @"^[\s+]*\[$"))
                 {
                     return true;
                 }
                 if (ValidarPorPatron(Entrada, @"^[\s+]*\]$"))
+                {
+                    return true;
+                }
+                //Control para operaciones 
+                if (ValidarPorPatron(Entrada, @"^[\s+]*\[[\s]{0,1}[\S\s]*\s\]"))
                 {
                     return true;
                 }
