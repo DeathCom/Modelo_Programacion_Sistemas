@@ -19,6 +19,7 @@ namespace Nimbus_01P
         int contador = 1, lineapalabra;
         string Nombre_Archivo, direccion;
         Nimbus_BLL obj_Bll = new Nimbus_BLL();
+        Semantica_BLL obj_tmp_bll = new Semantica_BLL();
         DateTime Hoy = DateTime.Now;
         int Ambito = 0, llave = 0, llaveC = 0;
 
@@ -65,7 +66,7 @@ namespace Nimbus_01P
 
             Button_Lexico.Visible = true;
             Button_Sintactico.Visible = true;
-            Button_Semantico.Visible = false;
+            Button_Semantico.Visible = true;
         }
         #endregion
 
@@ -585,10 +586,7 @@ namespace Nimbus_01P
         #region Analisis_Sintactico
         public void Sintactico()
         {
-            Nimbus_DAL obj_Dal = new Nimbus_DAL();
-            Nimbus_DAL obj_temp = new Nimbus_DAL();
             char[] delimitador = {'\udddd', '\xA' }; //   \udddd \xA
-
             string Frase = Panel_Codigo.Text;
             string[] Palabras = Frase.Split(delimitador);
 
@@ -609,8 +607,78 @@ namespace Nimbus_01P
         ///////////////////////////////////////////////////////////////////////////////////////////
 
         #region Analisis_Semantico
+        public void Obtener_Valores()
+        {
+            Semantica_DAL objTmp_dal = new Semantica_DAL();
+            
+            char[] delimitador = { '\udddd', '\xA' }; //   \udddd \xA
+            string Frase = Panel_Codigo.Text;
+            string[] Texto = Frase.Split(delimitador);
+
+            foreach (var Lineas in Texto)
+            {
+                if (PatronSemantico.Valida_Declaracion(Lineas))
+                {
+                    var valores = Lineas.Trim().Split(' ');
+                    if (!(valores.Equals("<") || valores.Equals(";")))
+                    {
+                        //MessageBox.Show(valores[0]);
+                        //MessageBox.Show(valores[1]);
+                        //MessageBox.Show(valores[3]);
+                        objTmp_dal.TIPO = valores[0];
+                        objTmp_dal.NOMBRE = valores[1];
+                        objTmp_dal.VALOR = valores[3];
+                        obj_tmp_bll.SAVE(objTmp_dal.TIPO, objTmp_dal.NOMBRE, objTmp_dal.VALOR);
+                    }
+                }
+            }
+        }
+        public void Analizar_Valores()
+        {
+            Semantica_DAL objTmp_dal = new Semantica_DAL();
+            Semantica_DAL objTmp2_dal = new Semantica_DAL();
+            char[] delimitador = { '\udddd', '\xA' }; //   \udddd \xA
+            string Frase = Panel_Codigo.Text;
+            string[] Palabras = Frase.Split(delimitador);
+            string aux = "dd", aux2 = "dd";
+
+            foreach (var palabra in Palabras)
+            {
+                //MessageBox.Show(palabra);
+                if (PatronSemantico.Validad_Variables(palabra))
+                {
+                    string[] valores = palabra.Trim().Split(' ');
+
+                    foreach(var valor in valores)
+                    {
+                        //MessageBox.Show(valor);
+                        objTmp_dal.NOMBRE = valor.Trim();
+                        aux2 = valor.Trim();
+
+                        objTmp2_dal = obj_tmp_bll.SEARCH_NOMBRE(objTmp_dal);
+                        aux = objTmp2_dal.NOMBRE;
+
+                        if (aux == aux2)
+                        {
+                            MessageBox.Show(aux2);
+                        }
+                        else
+                        {
+                            MessageBox.Show("jjj");
+                        }
+                    }
+                }
+                //if (!Patrones.VALIDA_CONTEXTO(palabra))
+                //{
+                //    string error = "Error Sintactico - Definición: " + palabra + " - Error al definir sintaxis - Posición: " + (lineapalabra - 1);
+                //    dataGridView2.Rows.Add(error);
+                //}
+            }
+        }
         public void Semantico()
         {
+            Obtener_Valores();
+            Analizar_Valores();
 
         }
         #endregion
@@ -718,7 +786,7 @@ namespace Nimbus_01P
 
         private void Button_Semantico_Click(object sender, EventArgs e)
         {
-
+            Semantico();
         }
         #endregion
 

@@ -2,16 +2,8 @@
 Nimbus_Main()
 [
 en flrt < 34 ;
-en flrte < 34 ;
+en flrte < 80 ;
 en tet < 0 ;
 en numero < 0 ;
-     [
-       en flrt < 34 ;
-     ]
-     [
-       en flrt < 34 ;
-          [
-            en flrt < 34 ;
-          ]
-     ]
+   #=>( numero1 % numero2 ) ;
 ]
