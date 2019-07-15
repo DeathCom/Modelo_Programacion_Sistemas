@@ -2,5 +2,5 @@
 Nimbus_Main()
 [
 ca char1 < 'f' ;
-ca char2 < 'h';
+ca char2 < 'h' ;
 ]

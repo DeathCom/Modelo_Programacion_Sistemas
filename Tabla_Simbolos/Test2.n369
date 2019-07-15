@@ -1,9 +1,9 @@
 <!_Nimbus_369_Code_!>
-Nimbus_Main()
-[
 en flrt < 34 ;
 en flrte < 80 ;
-en tet < 0 ;
-en numero < 0 ;
-   #=>( numero1 % numero2 ) ;
+en numeroDos < 0 ;
+en numeroUno < 0 ;
+Nimbus_Main()
+[
+   #=>( numeroUno % numeroDos ) ;
 ]

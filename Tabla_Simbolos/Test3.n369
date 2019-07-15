@@ -1,20 +1,11 @@
 <!_Nimbus_369_Code_!>
+   en x < 22 ;
+   en v < 22 ;
+   flo numt < 3.2 ;
 Nimbus_Main()
 [
-~ en num1 < 22 ;
-   en num2 < 22 ;
-@ ca char1 < 'a' ;
-    ca char2 < 'b' ;
-    flo num3 ;
-   flo flotante < #<=( 'Digite un numero entero' ) ;
-   #=>( numero1 % numero2 ) ;
-   #=>( 'El resultado de la suma es' % num3  ) ;
-   x< 8 maq 5 >
-   [
-       #=>( '8 es mayor' ) ;
-   ]
-   zc< x meq v >
-   [
-	#=>( 'x menor que v' ) ;
-   ]
+   numt < x sum v ;
+[
+   #=>( numt ) ;
+]
 ]

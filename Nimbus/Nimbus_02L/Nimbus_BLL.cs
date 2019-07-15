@@ -110,9 +110,63 @@ namespace Nimbus_02L
         #region Method_Delete
         public void DELETE_LIST()
         {
-            objInitial = null;
-            objQueue = null;
-            objTmp = null;
+
+            //if (objInitial == objQueue && ext.SIMBOLO.Equals(objInitial.SIMBOLO))
+            //{
+            //    objInitial = null;
+            //    objQueue = null;
+            //}
+            //else if (ext.SIMBOLO.Equals(objInitial.SIMBOLO))
+            //{
+            //    Nimbus_DAL tmpanterior = new Nimbus_DAL();
+            //    tmpanterior = objTmp.ANTERIOR;
+            //    objTmp = objTmp.SIGUIENTE;
+            //    objInitial = objTmp;
+            //    objTmp.ANTERIOR = tmpanterior;
+            //    tmpanterior.SIGUIENTE = objTmp;
+            //}
+            //else if (ext.SIMBOLO.Equals(objQueue.SIMBOLO))
+            //{
+            //    Nimbus_DAL tmpanterior = new Nimbus_DAL();
+            //    tmpanterior = objQueue.ANTERIOR;
+            //    objTmp = objQueue.SIGUIENTE;
+            //    objQueue = tmpanterior;
+            //    objTmp.ANTERIOR = tmpanterior;
+            //    tmpanterior.SIGUIENTE = objTmp;
+            //}
+            //else
+            //{
+            //    Nimbus_DAL tmpanterior = new Nimbus_DAL();
+            //    objTmp = objInitial;
+            //    while (objTmp.SIGUIENTE != objQueue)
+            //    {
+            //        if (ext.Equals(objTmp))
+            //        {
+            //            tmpanterior = objTmp.ANTERIOR;
+            //            objTmp = objTmp.SIGUIENTE;
+            //            objTmp.ANTERIOR = tmpanterior;
+            //            tmpanterior.SIGUIENTE = objTmp;
+            //        }
+            //        else
+            //        {
+            //            objTmp = objTmp.SIGUIENTE;
+            //        }
+            //    }
+            //}
+
+
+           if (objInitial != null)
+            {
+                objInitial = null;
+            }
+            if (objQueue != null)
+            {
+                objQueue = null;
+            }
+            if (objTmp != null)
+            {
+                objTmp = null;
+            }
         }
         #endregion
 

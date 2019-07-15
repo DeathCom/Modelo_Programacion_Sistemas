@@ -19,7 +19,7 @@ namespace Nimbus_01P
         int contador = 1, lineapalabra;
         string Nombre_Archivo, direccion;
         Nimbus_BLL obj_Bll = new Nimbus_BLL();
-        Semantica_BLL obj_tmp_bll = new Semantica_BLL();
+        Semantica_BLL obj_Sema_bll = new Semantica_BLL();
         DateTime Hoy = DateTime.Now;
         int Ambito = 0, llave = 0, llaveC = 0;
 
@@ -306,6 +306,8 @@ namespace Nimbus_01P
             //Panel_Codigo.Clear();
             dataGridView1.Rows.Clear();
             dataGridView2.Rows.Clear();
+            obj_Bll.DELETE_LIST();
+            obj_Sema_bll.DELETE_LIST();
         }
         #endregion
 
@@ -577,7 +579,7 @@ namespace Nimbus_01P
                 string error = "- Fata cierre o apertura de Ambito -";
                 SetInfoError(obj_Bll.SEARCH_TOKEN(obj_Dal), error, lineapalabra);
             }
-            obj_Bll.DELETE_LIST();
+            //obj_Bll.DELETE_LIST();
         }
         #endregion
 
@@ -628,58 +630,112 @@ namespace Nimbus_01P
                         objTmp_dal.TIPO = valores[0];
                         objTmp_dal.NOMBRE = valores[1];
                         objTmp_dal.VALOR = valores[3];
-                        obj_tmp_bll.SAVE(objTmp_dal.TIPO, objTmp_dal.NOMBRE, objTmp_dal.VALOR);
+                        obj_Sema_bll.SAVE(objTmp_dal.TIPO, objTmp_dal.NOMBRE, objTmp_dal.VALOR);
                     }
                 }
             }
         }
         public void Analizar_Valores()
         {
-            Semantica_DAL objTmp_dal = new Semantica_DAL();
-            Semantica_DAL objTmp2_dal = new Semantica_DAL();
-            char[] delimitador = { '\udddd', '\xA' }; //   \udddd \xA
+            //LoadData();
+            Semantica_DAL objSemantica_dal = new Semantica_DAL();
+            Semantica_DAL objSeamntica2_dal = new Semantica_DAL();
+            Nimbus_DAL obj_Dal = new Nimbus_DAL();
+            Nimbus_DAL obj_temp = new Nimbus_DAL();
+
+            char[] delimitador1 = { '\udddd', '\xA' }; 
+            char[] delimitador = { ' ', '\n' }; //  \udddd \xA
             string Frase = Panel_Codigo.Text;
-            string[] Palabras = Frase.Split(delimitador);
-            string aux = "dd", aux2 = "dd";
+            string[] Palabras = Frase.Split(delimitador1);
+            string auxsema = "dd";
+            string auxnimbus = "dd";
+            bool compatibleN = false;
+            bool compatibleC = false;
 
             foreach (var palabra in Palabras)
             {
                 //MessageBox.Show(palabra);
+                string[] valores = palabra.Trim().Split(' ');
+
                 if (PatronSemantico.Validad_Variables(palabra))
                 {
-                    string[] valores = palabra.Trim().Split(' ');
-
-                    foreach(var valor in valores)
+                    foreach (var valor in valores)
                     {
                         //MessageBox.Show(valor);
-                        objTmp_dal.NOMBRE = valor.Trim();
-                        aux2 = valor.Trim();
+                        obj_Dal.SIMBOLO = valor.Trim();
+                        auxnimbus = valor.Trim();
 
-                        objTmp2_dal = obj_tmp_bll.SEARCH_NOMBRE(objTmp_dal);
-                        aux = objTmp2_dal.NOMBRE;
+                        obj_temp = obj_Bll.SEARCH_TOKEN(obj_Dal);
+                        auxnimbus = obj_temp.SIMBOLO;
 
-                        if (aux == aux2)
+                        if (!(obj_temp.TIPO_TOKEN.Equals("Signo_de_Puntuacion") || obj_temp.TIPO_TOKEN.Equals("Constante") ||
+                            obj_temp.TIPO_TOKEN.Equals("Concatenacion") || obj_temp.TIPO_TOKEN.Equals("Asignacion") ||
+                            obj_temp.TIPO_TOKEN.Equals("Encapsulamiento") || obj_temp.TIPO_TOKEN.Equals("Palabra_Reservada") ||
+                            obj_temp.TIPO_TOKEN.Equals("Funcion_Imprimir") || obj_temp.TIPO_TOKEN.Equals("Funcion_Capturar") ||
+                            obj_temp.TIPO_TOKEN.Equals("Operador_Matematico") || obj_temp.TIPO_TOKEN.Equals("Expresion_Booleana") ||
+                            obj_temp.TIPO_TOKEN.Equals("Operador_Logico") || obj_temp.TIPO_TOKEN.Equals("Condicional") ||
+                            obj_temp.TIPO_TOKEN.Equals("Ciclo") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Funcion") ||
+                            obj_temp.TIPO_TOKEN.Equals("Retorno_Funcion") || obj_temp.TIPO_TOKEN.Equals("Declarador_de_Procedimiento") ||
+                            obj_temp.TIPO_TOKEN.Equals("Delimitador_de_Sentencia") || obj_temp.TIPO_TOKEN.Equals("Digito_Entero") ||
+                            obj_temp.TIPO_TOKEN.Equals("Digito_Flotante") || obj_temp.TIPO_TOKEN.Equals("Caracter")))
                         {
-                            MessageBox.Show(aux2);
-                        }
-                        else
-                        {
-                            MessageBox.Show("jjj");
+                            objSemantica_dal.NOMBRE = obj_temp.SIMBOLO;
+                            objSeamntica2_dal = obj_Sema_bll.SEARCH_NOMBRE(objSemantica_dal);
+                            auxsema = objSeamntica2_dal.NOMBRE;
+
+                            if (auxsema != auxnimbus)
+                            {
+                                //MessageBox.Show("Variable " + auxnimbus + " no definida");
+                                string error = "Error Semantico - Definición: " + auxnimbus + " - Error variable no definida - Posición: " + (lineapalabra - 1);
+                                dataGridView2.Rows.Add(error);
+                            }
+                            else
+                            {
+                                List<Semantica_DAL> lista = new List<Semantica_DAL>();
+                                Semantica_DAL objSemantica_dal_temp = new Semantica_DAL();
+                                objSemantica_dal_temp.NOMBRE = auxsema;
+                                objSemantica_dal_temp = obj_Sema_bll.SEARCH_NOMBRE(objSemantica_dal_temp);
+                                lista.Add(objSemantica_dal_temp);
+
+                                foreach (var objeto in lista)
+                                {
+                                    if (objeto.TIPO.Equals("flo") || objeto.TIPO.Equals("en"))
+                                    {
+                                        compatibleN = true;
+                                    }
+                                    if (objeto.TIPO.Equals("ca"))
+                                    {
+                                        compatibleC = true;
+                                    }
+                                }
+                            }
+                            if (compatibleN == true && compatibleC == true)
+                            {
+                                string error = "Error Semantico - Error de tipos en variables - Posición: " + (lineapalabra - 1);
+                                dataGridView2.Rows.Add(error);
+                            }
                         }
                     }
                 }
-                //if (!Patrones.VALIDA_CONTEXTO(palabra))
-                //{
-                //    string error = "Error Sintactico - Definición: " + palabra + " - Error al definir sintaxis - Posición: " + (lineapalabra - 1);
-                //    dataGridView2.Rows.Add(error);
-                //}
             }
+            obj_Bll.DELETE_LIST();
+            obj_Sema_bll.DELETE_LIST();
         }
         public void Semantico()
         {
-            Obtener_Valores();
-            Analizar_Valores();
-
+            try
+            {
+                if (!(obj_Bll.FIRST().Equals(null)))
+                {
+                    Obtener_Valores();
+                    Analizar_Valores();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error, Primero ejecute Lexico y Sintactico");
+            }
+            
         }
         #endregion
 
