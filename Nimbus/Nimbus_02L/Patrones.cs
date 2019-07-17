@@ -117,7 +117,7 @@ namespace Nimbus_02L
                     return true;
                 }
                 // Suma resta multiplicacion division modulo y exponente
-                if (ValidarPorPatron(Entrada, @"^[\s+]*[A-Za-z]{0,1}\w{0,30}\s<\s\w{1,33}\s(sum|res|mult|div|modd|exp){1}\s\w{1,33}\s;$"))
+                if (ValidarPorPatron(Entrada, @"^[\s+]*[A-Za-z]{0,1}\w{0,30}\s<\s(\w{1,33}|\d{1,32000}.\d{1,999999})\s(sum|res|mult|div|modd|exp){1}\s(\w{1,33}|\d{1,32000}.\d{1,999999})\s;$"))
                 {
                     return true;
                 }
@@ -136,7 +136,7 @@ namespace Nimbus_02L
                     return true;
                 }
                 // funcion capturar
-                if (ValidarPorPatron(Entrada, @"^[\s+]*(en|ca|flo)\s\w*\s<\s#<=\(\s\'[\w*\s\w*]+\'\s\)\s\;$"))
+                if (ValidarPorPatron(Entrada, @"((^[\s+]*\w*\s<\s#<=\(\s\'[\w*\s\w*]+\'\s\)\s\;$)|(^[\s+]*\w*\s<\s#<=\(\s\d{1,32000}\s\)\s\;$)|(^[\s+]*\w*\s<\s#<=\(\s\d{1,32000}.\d{1,32000}\s\)\s\;$))"))
                 {
                     return true;
                 }

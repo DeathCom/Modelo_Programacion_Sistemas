@@ -110,7 +110,9 @@ namespace Nimbus_02L
         #region Method_Delete
         public void DELETE_LIST()
         {
-
+            objInitial = null;
+            objQueue = null;
+            objTmp = null;
             //if (objInitial == objQueue && ext.SIMBOLO.Equals(objInitial.SIMBOLO))
             //{
             //    objInitial = null;
@@ -154,19 +156,6 @@ namespace Nimbus_02L
             //    }
             //}
 
-
-           if (objInitial != null)
-            {
-                objInitial = null;
-            }
-            if (objQueue != null)
-            {
-                objQueue = null;
-            }
-            if (objTmp != null)
-            {
-                objTmp = null;
-            }
         }
         #endregion
 

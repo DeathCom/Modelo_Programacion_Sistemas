@@ -2,9 +2,11 @@
    en x < 22 ;
    en v < 22 ;
    flo numt < 3.2 ;
+   flo flotante < 0.0 ;
 Nimbus_Main()
 [
    numt < x sum v ;
+   flotante < #<=( 'Digite_numero' ) ;
 [
    #=>( numt ) ;
 ]
