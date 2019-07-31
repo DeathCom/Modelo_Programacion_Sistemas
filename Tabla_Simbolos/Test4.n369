@@ -1,0 +1,20 @@
+<!_Nimbus_369_Code_!>
+   en ps < 30 ;
+   en ss < 20 ;
+   en numtS < 0 ;
+   en pd < 30 ;
+   en sd < 2 ;
+   en numtD < 0 ;
+   en pr < 25 ;
+   en sr < 5 ;
+   en numtR < 0 ;
+Nimbus_Main()
+[
+   numtS < ps res ss ;
+]
+[
+   numtD < pd div sd ;
+]
+[
+   numtR < pr sum sr ;
+]

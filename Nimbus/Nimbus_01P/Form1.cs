@@ -46,12 +46,6 @@ namespace Nimbus_01P
             Button_Lexico.Visible = false;
             Button_Sintactico.Visible = false;
             Button_Semantico.Visible = false;
-
-            Btn_Primero.Visible = true;
-            Btn_Anterior.Visible = true;
-            Btn_Siguiente.Visible = true;
-            Btn_Ultimo.Visible = true;
-            Btn_Buscar.Visible = true;
         }
 
         public void Activar()
@@ -64,8 +58,8 @@ namespace Nimbus_01P
             guardarToolStripMenuItem.Enabled = true;
             guardarComoToolStripMenuItem.Enabled = true;
 
-            Button_Lexico.Visible = true;
-            Button_Sintactico.Visible = true;
+            Button_Lexico.Visible = false;
+            Button_Sintactico.Visible = false;
             Button_Semantico.Visible = true;
         }
         #endregion
@@ -624,9 +618,6 @@ namespace Nimbus_01P
                     var valores = Lineas.Trim().Split(' ');
                     if (!(valores.Equals("<") || valores.Equals(";")))
                     {
-                        //MessageBox.Show(valores[0]);
-                        //MessageBox.Show(valores[1]);
-                        //MessageBox.Show(valores[3]);
                         objTmp_dal.TIPO = valores[0];
                         objTmp_dal.NOMBRE = valores[1];
                         objTmp_dal.VALOR = valores[3];
@@ -718,8 +709,7 @@ namespace Nimbus_01P
                     }
                 }
             }
-            obj_Bll.DELETE_LIST();
-            obj_Sema_bll.DELETE_LIST();
+            
         }
         public void Semantico()
         {
@@ -736,6 +726,201 @@ namespace Nimbus_01P
                 MessageBox.Show("Error, Primero ejecute Lexico y Sintactico");
             }
             
+        }
+        #endregion
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+        #region Cogigo_Intermedio
+        public void Codigo_intermedio()
+        {
+            //LoadData();
+            Semantica_DAL objSemantica_dal = new Semantica_DAL();
+            Semantica_DAL objSeamntica2_dal = new Semantica_DAL();
+            Nimbus_DAL obj_Dal = new Nimbus_DAL();
+            Nimbus_DAL obj_temp = new Nimbus_DAL();
+
+            char[] delimitador1 = { '\udddd', '\xA' };
+            char[] delimitador = { ' ', '\n' }; //  \udddd \xA
+            string Frase = Panel_Codigo.Text;
+            string[] Palabras = Frase.Split(delimitador1);
+            string mensaje = "dd", cabecera="jj", pie="df", fin="tg";
+            Boolean b_Suma = false, b_Resta = false, b_Multi = false, b_Div = false;
+
+            if (!Directory.Exists(@"C:\Nimbus\Cod_Intermedio"))
+            {
+                Directory.CreateDirectory(@"C:\Nimbus\Cod_Intermedio");
+            }
+            StreamWriter Cod_Intermedio = File.AppendText(@"C:\Nimbus\Cod_Intermedio\Cod_Intermedio.asm");
+            #region Cabecera
+            cabecera = "include \'emu8086.inc\'\r\n"
+                + "org 100h \r\n"
+                + ".data \r\n\n"
+                + "define_print_string \r\n"
+                + "define_print_num \r\n"
+                + "define_print_num_uns \r\n"
+                + "sum db 3 dup (?) \r\n"
+                + "rest db 3 dup (?) \r\n"
+                + "mult db 3 dup (?) \r\n"
+                + "divi db 3 dup (?) \r\n\n"
+                + ".code \r\n";
+            Cod_Intermedio.WriteLine(cabecera);
+            #endregion
+            foreach (var palabra in Palabras)
+            {
+                //MessageBox.Show(palabra);
+                string[] valores = palabra.Trim().Split(' ');
+
+                if (PatronSemantico.Validad_Variables(palabra))
+                {
+                    #region Seccion_Suma
+                    if (palabra.Contains("sum"))
+                    {
+                        b_Suma = true;
+                        int i = 0;
+                        foreach (var valor in valores)
+                        {
+                            objSemantica_dal.NOMBRE = valor.Trim();
+                            objSeamntica2_dal = obj_Sema_bll.SEARCH_NOMBRE(objSemantica_dal);
+                            if (!(objSeamntica2_dal.NOMBRE == null))
+                            {
+                                mensaje = "mov sum[" + i + "]," + objSeamntica2_dal.VALOR;
+                                i++;
+                                //MessageBox.Show(mensaje);
+                                Cod_Intermedio.WriteLine(mensaje);
+                            }
+                        }
+                    }
+                    #endregion
+                    
+                    #region Seccion_Resta
+                    if (palabra.Contains("res"))
+                    {
+                        b_Resta = true;
+                        int i = 0;
+                        foreach (var valor in valores)
+                        {
+                            objSemantica_dal.NOMBRE = valor.Trim();
+                            objSeamntica2_dal = obj_Sema_bll.SEARCH_NOMBRE(objSemantica_dal);
+                            if (!(objSeamntica2_dal.NOMBRE == null))
+                            {
+                                mensaje = "mov rest[" + i + "]," + objSeamntica2_dal.VALOR;
+                                i++;
+                                //MessageBox.Show(mensaje);
+                                Cod_Intermedio.WriteLine(mensaje);
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region Seccion_Multiplicacion
+                    if (palabra.Contains("mult"))
+                    {
+                        b_Multi = true;
+                        int i = 0;
+                        foreach (var valor in valores)
+                        {
+                            objSemantica_dal.NOMBRE = valor.Trim();
+                            objSeamntica2_dal = obj_Sema_bll.SEARCH_NOMBRE(objSemantica_dal);
+                            if (!(objSeamntica2_dal.NOMBRE == null))
+                            {
+                                mensaje = "mov mult[" + i + "]," + objSeamntica2_dal.VALOR;
+                                i++;
+                                //MessageBox.Show(mensaje);
+                                Cod_Intermedio.WriteLine(mensaje);
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region Seccion_Division
+                    if (palabra.Contains("div"))
+                    {
+                        b_Div = true;
+                        int i = 0;
+                        foreach (var valor in valores)
+                        {
+                            objSemantica_dal.NOMBRE = valor.Trim();
+                            objSeamntica2_dal = obj_Sema_bll.SEARCH_NOMBRE(objSemantica_dal);
+                            if (!(objSeamntica2_dal.NOMBRE == null))
+                            {
+                                mensaje = "mov divi[" + i + "]," + objSeamntica2_dal.VALOR;
+                                i++;
+                                //MessageBox.Show(mensaje);
+                                Cod_Intermedio.WriteLine(mensaje);
+                            }
+                        }
+                    }
+                    #endregion
+                }
+            }
+
+            #region Pie
+            if (b_Suma)
+            {
+                pie = "\r\nSumas proc\r\n"
+                + "printn \" \"\r\n"
+                + "xor ax,ax \r\n"
+                + "add al, sum[1] \r\n"
+                + "add al, sum[2] \r\n"
+                + "mov sum[0],al \r\n"
+                + "print \"La suma es: \" \r\n"
+                + "call print_num \r\n"
+                + "Sumas endp \r\n";
+                Cod_Intermedio.WriteLine(pie);
+            }
+            if (b_Resta)
+            {
+                pie = "\r\nRestas proc\r\n"
+                + "printn \" \"\r\n"
+                + "xor ax,ax \r\n"
+                + "add al, rest[1] \r\n"
+                + "sub al, rest[2] \r\n"
+                + "mov rest[0],al \r\n"
+                + "print \"La resta es: \" \r\n"
+                + "call print_num \r\n"
+                + "Restas endp \r\n";
+                Cod_Intermedio.WriteLine(pie);
+            }
+
+            if (b_Multi)
+            {
+                pie = "\r\nMultiplicaciones proc\r\n"
+                + "printn \" \"\r\n"
+                + "xor ax,ax \r\n"
+                + "add al, mult[1] \r\n"
+                + "mul mult[2] \r\n"
+                + "mov mult[0],al \r\n"
+                + "print \"La multiplicacion es: \" \r\n"
+                + "call print_num \r\n"
+                + "Multiplicaciones endp \r\n";
+                Cod_Intermedio.WriteLine(pie);
+            }
+
+            if (b_Div)
+            {
+                pie = "\r\nDivisiones proc\r\n"
+                + "printn \" \"\r\n"
+                + "xor ax,ax \r\n"
+                + "add al, divi[1] \r\n"
+                + "div divi[2] \r\n"
+                + "mov divi[0],al \r\n"
+                + "print \"La division es: \" \r\n"
+                + "call print_num \r\n"
+                + "Divisiones endp \r\n";
+                Cod_Intermedio.WriteLine(pie);
+            }
+            #endregion
+
+            #region Fin
+            fin = "\r\nexit:\r\n"
+                + "mov ah,0 \r\n"
+                + "int 16h \r\n\n"
+                + "ret \r\n"
+                + "end \r\n";
+            Cod_Intermedio.WriteLine(fin);
+            #endregion
+            Cod_Intermedio.Close();
         }
         #endregion
 
@@ -790,59 +975,38 @@ namespace Nimbus_01P
         }
         #endregion
 
-        #region Botones_desplazamiento y busqueda
-        private void Btn_Primero_Click(object sender, EventArgs e)
-        {
-            //SetInfo(obj_Bll.FIRST(), lineapalabra);
-        }
-
-        private void Btn_Anterior_Click(object sender, EventArgs e)
-        {
-            //SetInfo(obj_Bll.PREVIOUS(), lineapalabra);
-        }
-
-        private void Btn_Siguiente_Click(object sender, EventArgs e)
-        {
-            //SetInfo(obj_Bll.FOLLOWING(), lineapalabra);
-        }
-
-        private void Btn_Ultimo_Click(object sender, EventArgs e)
-        {
-            //SetInfo(obj_Bll.LAST(), lineapalabra);
-        }
-
-        private void Btn_Buscar_Click(object sender, EventArgs e)
-        {
-            Nimbus_DAL obj_Dal = new Nimbus_DAL();
-            obj_Dal.SIMBOLO = TextBox_Search.Text.Trim();
-            //SetInfo(obj_Bll.SEARCH_TOKEN(obj_Dal), lineapalabra);
-        }
-        #endregion
-
         #region Boton_Limpiar
         private void Btn_Limpiar_Click(object sender, EventArgs e)
         {
             Limpiar();
+            StreamWriter Cod_Intermedio = new StreamWriter(@"C:\Nimbus\Cod_Intermedio\Cod_Intermedio.asm");
+            Cod_Intermedio.WriteLine("");
         }
         #endregion
 
         #region Botones_Lexico_Sintactico_Semantico
         private void Button_Lexico_Click(object sender, EventArgs e)
         {
-            Limpiar();
-            Lexico();
+            //Limpiar();
+            //Lexico();
         }
 
         private void Button_Sintactico_Click(object sender, EventArgs e)
         {
             //dataGridView2.Rows.Clear();
             //Limpiar();
-            Sintactico();
+            //Sintactico();
         }
 
         private void Button_Semantico_Click(object sender, EventArgs e)
         {
+            Limpiar();
+            Lexico();
+            Sintactico();
             Semantico();
+            Codigo_intermedio();
+            obj_Bll.DELETE_LIST();
+            obj_Sema_bll.DELETE_LIST();
         }
         #endregion
 
