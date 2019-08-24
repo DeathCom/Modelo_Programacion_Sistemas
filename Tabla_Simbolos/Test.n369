@@ -1,6 +1,11 @@
 <!_Nimbus_369_Code_!>
 Nimbus_Main()
+en numeroUno < 12 ;
+en numeroDos < 15 ;
+en suma < 0 ;
 [
-ca char1 < 'f' ;
-ca char2 < 'h' ;
+suma < numeroUno sum numeroDos ;
+]
+[
+#=>( suma ) ;
 ]

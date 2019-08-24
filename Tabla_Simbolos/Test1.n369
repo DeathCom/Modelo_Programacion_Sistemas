@@ -1,17 +1,11 @@
 <!_Nimbus_369_Code_!>
 Nimbus_Main()
+en numeroUno < 12 ;
+en numeroDos < 15 ;
+en division < 0 ;
 [
-ca caracter < 'a' ;
-en entero < 22 ;
-flo float < 36.5 ;
-   [
-     ca caracter < 'a' ;
-     en entero < 22 ;
-     flo float < 36.5 ;
-     [
-       ca caracter < 'a' ;
-       en entero < 22 ;
-       flo float < 36.5 ;
-     ]
-   ]
+division < numeroUno sum numeroDos ;
+]
+[
+#=>( division ) ;
 ]

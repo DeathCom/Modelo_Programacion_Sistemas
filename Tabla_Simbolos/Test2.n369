@@ -1,9 +1,11 @@
 <!_Nimbus_369_Code_!>
-en flrt < 34 ;
-en flrte < 80 ;
-en numeroDos < 0 ;
-en numeroUno < 0 ;
 Nimbus_Main()
+en numeroUno < 12 ;
+en numeroDos < 15 ;
+en resta < 0 ;
 [
-   #=>( numeroUno % numeroDos ) ;
+resta < numeroUno sum numeroDos ;
+]
+[
+#=>( resta ) ;
 ]
